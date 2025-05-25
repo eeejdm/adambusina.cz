@@ -4,7 +4,11 @@ import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [decapCmsOauth()],
+  integrations: [
+    decapCmsOauth({
+      oauthDisabled: true, // Disable GitHub OAuth routes when using Git Gateway
+    }),
+  ],
   adapter: netlify(),
   output: 'server',
 }); 
