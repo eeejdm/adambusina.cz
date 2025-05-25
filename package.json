@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "astro": "^5.8.0",
+    "astro-decap-cms-oauth": "^0.5.1"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  }
+}

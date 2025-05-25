@@ -1,0 +1,80 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { Image } from 'astro:assets'; // For optimized images
+
+export interface Props {
+    content: {
+        title: string;
+        description?: string;
+        date: Date;
+        cover?: string;
+        images?: Array<{ image: string; alt: string }>;
+    };
+}
+
+const { content } = Astro.props;
+const { title, description, date, cover, images } = content;
+---
+
+<BaseLayout title={title} description={description}>
+    <article>
+        <h1>{title}</h1>
+        <p><time datetime={date.toISOString()}>{date.toLocaleDateString('en-us', { year: 'numeric', month: 'long', day: 'numeric' })}</time></p>
+        {cover && <Image src={cover} alt={`Cover image for ${title}`} width={800} height={400} class="cover-image" />}
+        
+        <div class="gallery-content">
+            <slot /> {/* For the main markdown body */}
+        </div>
+
+        {images && images.length > 0 && (
+            <div class="image-gallery">
+                <h2>Gallery Images</h2>
+                <div class="grid">
+                    {images.map(imgEntry => (
+                        <figure>
+                            <Image src={imgEntry.image} alt={imgEntry.alt || title} width={400} height={300} loading="lazy" decoding="async" />
+                            {imgEntry.alt && <figcaption>{imgEntry.alt}</figcaption>}
+                        </figure>
+                    ))}
+                </div>
+            </div>
+        )}
+    </article>
+</BaseLayout>
+
+<style>
+    .cover-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+    }
+    .gallery-content {
+        margin-bottom: 2rem;
+    }
+    .image-gallery h2 {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .image-gallery .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    .image-gallery figure {
+        margin: 0;
+        padding: 0;
+    }
+    .image-gallery img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .image-gallery figcaption {
+        font-size: 0.9em;
+        text-align: center;
+        margin-top: 0.5em;
+        color: #555;
+    }
+</style> 
