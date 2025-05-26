@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import settings from '../content/settings/config.json'; // Site-wide settings
+import homepageContent from '../content/pages/home.json'; // Homepage specific content
 import { Image } from 'astro:assets'; // For optimized images from CMS that are in /src
 import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the carousel
 // If homepage_signature_image is a path in /public, use standard <img> instead.
@@ -14,27 +15,35 @@ import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the car
   <div class="container">
     <section class="hero-section">
       <div class="hero-content-column">
-        <h1>{settings.homepage_hero_heading}</h1>
+        <h1>{homepageContent.homepage_hero_heading}</h1>
         {/* Ensure subheading (paragraph) is a block and button is a separate block for stacking */}
         <div class="hero-subheading-wrapper">
-          {settings.homepage_hero_subheading && <Fragment set:html={settings.homepage_hero_subheading} />}
+          {homepageContent.homepage_hero_subheading && <Fragment set:html={homepageContent.homepage_hero_subheading} />}
         </div>
-        {settings.homepage_hero_cta_label && settings.homepage_hero_cta_link && (
-          <a href={settings.homepage_hero_cta_link} class="cta-button hero-cta">
-            {settings.homepage_hero_cta_label}
+        {homepageContent.homepage_hero_cta_label && homepageContent.homepage_hero_cta_link && (
+          <a href={homepageContent.homepage_hero_cta_link} class="cta-button hero-cta">
+            {homepageContent.homepage_hero_cta_label}
           </a>
         )}
       </div>
-      {settings.homepage_signature_image && (
+      {homepageContent.homepage_signature_image && (
         <div class="hero-signature-column">
-          <img src={settings.homepage_signature_image} alt="Signature" class="hero-signature" />
+          <img src={homepageContent.homepage_signature_image} alt="Signature" class="hero-signature" />
           {/* Placeholder for Astro <Image> component: <Image src={undefined_variable_or_import} alt="Signature optimized" class="hero-signature" width={500}/> */}
         </div>
       )}
     </section>
   </div> {/* End of .container for hero section */}
 
-  <PhotoCarousel /> {/* Add the photo carousel here - now outside .container */}
+  <PhotoCarousel images={homepageContent.carousel_images} /> {/* Add the photo carousel here - now outside .container */}
+
+  <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
+    {homepageContent.gallery_cta_label && homepageContent.gallery_cta_link && (
+      <a href={homepageContent.gallery_cta_link} class="cta-button gallery-cta">
+        {homepageContent.gallery_cta_label}
+      </a>
+    )}
+  </div>
 
   <div class="container"> {/* Re-open .container for subsequent sections if needed */}
     {/* 
@@ -164,7 +173,7 @@ import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the car
 
   @media (max-width: 768px) { 
     .hero-section h1 {
-      font-size: 2.5rem;
+      font-size: 35px; /* Adjusted hero heading size for small screens */
     }
     .hero-subheading-wrapper :global(p) {
       font-size: 1rem;
@@ -180,5 +189,52 @@ import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the car
        /* font-size will be 1.2em of 13px */
        margin-left: 8px;
     }
+    .gallery-cta { /* Style for the new gallery button on small screens if needed, for now inherits */
+        /* Example: font-size: 0.9rem; padding: 0.6em 1.2em; */
+    }
   }
+
+  /* General styles for .cta-button if not already fully defined or to ensure consistency */
+  /* This might be a good place to consolidate if BaseLayout.astro's .cta-button is not global enough */
+  /* For now, we assume .cta-button from BaseLayout or other global styles are sufficient */
+  /* If the new button needs specific styling beyond the shared .cta-button, we use .gallery-cta */
+  .gallery-cta {
+    /* Let's ensure it matches the hero CTA's base style */
+    display: inline-block;
+    background-color: var(--color-secondary-gray, #cbd6de);
+    color: var(--color-dark, #1e2022);
+    padding: 12px 18px;
+    border-radius: 2em;
+    text-decoration: none;
+    font-family: var(--font-text); /* Using --font-text by default for gallery button, not headings font */
+    font-size: 14px; /* Default size, matches hero-cta base */
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    /* No specific margin-top here as it's handled by the wrapper div */
+  }
+
+  .gallery-cta:hover,
+  .gallery-cta:focus {
+    background-color: var(--color-primary-gray, #55616a);
+    color: var(--color-white, #ffffff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .gallery-cta::after { /* Arrow for the gallery button */
+    content: '→';
+    margin-left: 10px;
+    font-size: 1.2em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .gallery-cta:hover::after,
+  .gallery-cta:focus::after {
+    transform: translateX(3px);
+  }
+
 </style> 

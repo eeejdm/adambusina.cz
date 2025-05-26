@@ -38,13 +38,7 @@ collections:
               - { label: "Label", name: "label", widget: "string" }
               - { label: "URL", name: "url", widget: "string" }
           - { label: "Global SEO Description", name: "seo_description", widget: "text", required: false }
-          # Homepage specific content - might be better as a 'homepage' file collection or directly in index.astro if complex
-          - { label: "Homepage - Hero Heading", name: "homepage_hero_heading", widget: "string", default: "Zachytím vaše příběhy" }
-          - { label: "Homepage - Hero Subheading", name: "homepage_hero_subheading", widget: "markdown", default: "Autentické a emotivní fotografie, které vám zůstanou navždy." }
-          - { label: "Homepage - Hero CTA Label", name: "homepage_hero_cta_label", widget: "string", default: "Prohlédnout portfolio" }
-          - { label: "Homepage - Hero CTA Link", name: "homepage_hero_cta_link", widget: "string", default: "/galerie" }
-          - { label: "Homepage - Signature Image", name: "homepage_signature_image", widget: "image", required: false }
-          # ... other homepage specific fields from CMS_items.txt can be added here if managed globally ...
+          # Homepage specific content now managed under 'Pages' collection
 
   - name: "galleries"
     label: "Galleries"
@@ -99,6 +93,30 @@ collections:
   - name: "pages"
     label: "Static Pages"
     files:
+      - label: "Homepage"
+        name: "home"
+        file: "src/content/pages/home.json" # Homepage content stored as JSON
+        format: "json"
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Domů" }
+          - { label: "Hero Heading", name: "homepage_hero_heading", widget: "string", default: "Zachytím vaše příběhy" }
+          - { label: "Hero Subheading", name: "homepage_hero_subheading", widget: "markdown", default: "Autentické a emotivní fotografie, které vám zůstanou navždy." }
+          - { label: "Hero CTA Label", name: "homepage_hero_cta_label", widget: "string", default: "Prohlédnout portfolio" }
+          - { label: "Hero CTA Link", name: "homepage_hero_cta_link", widget: "string", default: "/galerie" }
+          - { label: "Signature Image", name: "homepage_signature_image", widget: "image", required: false }
+          - label: "Carousel Images"
+            name: "carousel_images"
+            widget: "list"
+            summary: "{{fields.alt}}"
+            hint: "Images for the homepage photo carousel. Ensure paths are relative to /public (e.g. /uploads/media/image.jpg) or select from media library."
+            fields:
+              - { label: "Image", name: "src", widget: "image" } # 'src' to match prop expected by carousel
+              - { label: "Alt Text", name: "alt", widget: "string", default: "Carousel image" }
+          - { label: "Gallery CTA Label (below carousel)", name: "gallery_cta_label", widget: "string", default: "Zobrazit celou galerii" }
+          - { label: "Gallery CTA Link (below carousel)", name: "gallery_cta_link", widget: "string", default: "/galerie" }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false, hint: "Optional. If empty, uses Global SEO Description." }
+          # ... other homepage specific sections like "Why Me", "About Snippet" can be added as fields here ...
+
       - label: "About Page"
         name: "about"
         file: "src/content/pages/omne.md" # Will render at /omne

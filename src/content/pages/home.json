@@ -1,0 +1,45 @@
+{
+  "title": "Domů",
+  "homepage_hero_heading": "Zachytím vaše příběhy",
+  "homepage_hero_subheading": "Autentické a emotivní fotografie, které vám zůstanou navždy.",
+  "homepage_hero_cta_label": "Prohlédnout portfolio",
+  "homepage_hero_cta_link": "/galerie",
+  "homepage_signature_image": null,
+  "carousel_images": [
+    {
+      "src": "/uploads/media/image1.jpg",
+      "alt": "Carousel image 1"
+    },
+    {
+      "src": "/uploads/media/image2-scaled.jpg",
+      "alt": "Carousel image 2"
+    },
+    {
+      "src": "/uploads/media/image3.jpg",
+      "alt": "Carousel image 3"
+    },
+    {
+      "src": "/uploads/media/image4-scaled.jpg",
+      "alt": "Carousel image 4"
+    },
+    {
+      "src": "/uploads/media/image5.jpg",
+      "alt": "Carousel image 5"
+    },
+    {
+      "src": "/uploads/media/image6-scaled.jpg",
+      "alt": "Carousel image 6"
+    },
+    {
+      "src": "/uploads/media/image7.jpg",
+      "alt": "Carousel image 7"
+    },
+    {
+      "src": "/uploads/media/image8.jpg",
+      "alt": "Carousel image 8"
+    }
+  ],
+  "gallery_cta_label": "Zobrazit celou galerii",
+  "gallery_cta_link": "/galerie",
+  "seo_description": ""
+} 

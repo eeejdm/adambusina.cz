@@ -10,9 +10,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// Static list of images based on previously provided files
-// Ensure these paths are correct relative to the /public directory.
-const galleryImages = [
+// Static list of images - will be kept as a fallback if no images are passed via props
+const staticGalleryImages = [
   { src: '/uploads/media/image1.jpg', alt: 'Gallery Image 1' },
   { src: '/uploads/media/image2-scaled.jpg', alt: 'Gallery Image 2' },
   { src: '/uploads/media/image3.jpg', alt: 'Gallery Image 3' },
@@ -24,16 +23,19 @@ const galleryImages = [
 ];
 
 export interface Props {
-  images?: { src: string; alt: string }[];
+  // Images prop now expects an array of objects with src and alt, coming from CMS
+  images?: { src: string; alt: string }[]; 
 }
 
-const { images = galleryImages } = Astro.props;
+// Use images from props if available, otherwise fallback to staticGalleryImages
+const { images: propImages } = Astro.props;
+const imagesToDisplay = propImages && propImages.length > 0 ? propImages : staticGalleryImages;
 ---
 
-{images && images.length > 0 ? (
+{imagesToDisplay && imagesToDisplay.length > 0 ? (
   <div class="swiper photo-carousel-container">
     <div class="swiper-wrapper">
-      {images.map((image) => (
+      {imagesToDisplay.map((image) => (
         <div class="swiper-slide photo-carousel-slide">
           <img src={image.src} alt={image.alt} class="photo-carousel-image" />
         </div>
