@@ -1,0 +1,208 @@
+---
+import Swiper from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+
+// Import Swiper styles. These are crucial for Swiper to work correctly.
+// Note: Astro might require these to be imported in a <script> tag with is:inline
+// or directly in a global CSS if not processed correctly via frontmatter for some setups.
+// However, typical Vite/Astro setups should handle these frontmatter imports for CSS.
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// Static list of images based on previously provided files
+// Ensure these paths are correct relative to the /public directory.
+const galleryImages = [
+  { src: '/uploads/media/image1.jpg', alt: 'Gallery Image 1' },
+  { src: '/uploads/media/image2-scaled.jpg', alt: 'Gallery Image 2' },
+  { src: '/uploads/media/image3.jpg', alt: 'Gallery Image 3' },
+  { src: '/uploads/media/image4-scaled.jpg', alt: 'Gallery Image 4' },
+  { src: '/uploads/media/image5.jpg', alt: 'Gallery Image 5' },
+  { src: '/uploads/media/image6-scaled.jpg', alt: 'Gallery Image 6' },
+  { src: '/uploads/media/image7.jpg', alt: 'Gallery Image 7' },
+  { src: '/uploads/media/image8.jpg', alt: 'Gallery Image 8' },
+];
+
+export interface Props {
+  images?: { src: string; alt: string }[];
+}
+
+const { images = galleryImages } = Astro.props;
+---
+
+{images && images.length > 0 ? (
+  <div class="swiper photo-carousel-container">
+    <div class="swiper-wrapper">
+      {images.map((image) => (
+        <div class="swiper-slide photo-carousel-slide">
+          <img src={image.src} alt={image.alt} class="photo-carousel-image" />
+        </div>
+      ))}
+    </div>
+    <div class="swiper-button-prev photo-carousel-arrow photo-carousel-arrow-prev"></div>
+    <div class="swiper-button-next photo-carousel-arrow photo-carousel-arrow-next"></div>
+    <div class="swiper-pagination photo-carousel-pagination"></div>
+  </div>
+) : (
+  <p class="text-center py-8">No images available for the carousel.</p>
+)}
+
+<script>
+  // Import Swiper and modules for client-side execution
+  import Swiper from 'swiper';
+  import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+
+  function initializePhotoCarousel() {
+    const carousels = document.querySelectorAll('.photo-carousel-container');
+    carousels.forEach(carouselElement => {
+      if (!(carouselElement instanceof HTMLElement) || carouselElement.classList.contains('swiper-initialized-custom')) {
+        return;
+      }
+
+      const swiper = new Swiper(carouselElement, {
+        modules: [Navigation, Pagination, Autoplay],
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10, // Default spaceBetween for single slide view & medium screens
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: true, // Stop autoplay on user interaction
+        },
+        pagination: {
+          el: carouselElement.querySelector('.photo-carousel-pagination') as HTMLElement | null,
+          clickable: true,
+          bulletClass: 'photo-carousel-pagination-bullet',
+          bulletActiveClass: 'photo-carousel-pagination-bullet-active',
+          renderBullet: function (index, className) {
+            return '<span class="' + className + '"></span>';
+          }
+        },
+        navigation: {
+          nextEl: carouselElement.querySelector('.photo-carousel-arrow-next') as HTMLElement | null,
+          prevEl: carouselElement.querySelector('.photo-carousel-arrow-prev') as HTMLElement | null,
+        },
+        breakpoints: {
+          // Medium screens (e.g., tablets) - spaceBetween is 10px from above
+          768: {
+            slidesPerView: 2,
+            // spaceBetween: 10, // Already 10 from default
+          },
+          // Large screens (e.g., desktops)
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 10, // Consistent 10px spaceBetween
+          },
+        },
+        on: {
+            init: function () {
+                carouselElement.classList.add('swiper-initialized-custom');
+            }
+        }
+      });
+    });
+  }
+
+  // Initialize on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePhotoCarousel);
+  } else {
+    initializePhotoCarousel();
+  }
+  // Initialize after Astro view transitions page swap
+  document.addEventListener('astro:page-load', initializePhotoCarousel);
+</script>
+
+<style is:global>
+  .photo-carousel-container {
+    width: 100%; 
+    padding-left: 10px; /* Page edge spacing */
+    padding-right: 10px; /* Page edge spacing */
+    box-sizing: border-box; 
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden; 
+    position: relative; 
+  }
+
+  .photo-carousel-slide {
+    text-align: center;
+    font-size: 18px;
+    /* background: #f7f7f7; */ /* Optional slide background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .photo-carousel-image {
+    display: block;
+    width: 100%;
+    height: auto; /* Maintained for natural aspect ratio */
+    /* object-fit: cover; /* Removed, rely on natural aspect ratio */
+    border-radius: 12px; /* Rounded corners for images */
+    /* max-height: 45vh; /* Removed for now, to see effect of width changes */
+  }
+
+  /* Sleek Arrows */
+  .photo-carousel-arrow {
+    color: var(--color-white, #fff); /* Arrow icon color */
+    background-color: rgba(30, 32, 34, 0.5); /* Semi-transparent dark background */
+    width: 44px; 
+    height: 44px;
+    border-radius: 50%; /* Circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.7;
+    z-index: 10; /* Ensure arrows are above slides */
+  }
+  .photo-carousel-arrow:hover {
+    background-color: rgba(30, 32, 34, 0.8);
+    opacity: 1;
+  }
+  .photo-carousel-arrow::after { /* Swiper's default arrow icon */
+    font-size: 18px; /* Size of the arrow icon */
+    font-weight: bold;
+  }
+  /* Position arrows relative to the carousel container's content area (inside its padding) */
+  .photo-carousel-container > .photo-carousel-arrow-prev {
+    left: 10px; /* Adjusted for 10px container padding, making it 20px from page edge */
+  }
+  .photo-carousel-container > .photo-carousel-arrow-next {
+    right: 10px; /* Adjusted for 10px container padding, making it 20px from page edge */
+  }
+  /* Hide arrows on very small screens if they clutter */
+  @media (max-width: 640px) {
+    .photo-carousel-arrow {
+      width: 36px;
+      height: 36px;
+    }
+    .photo-carousel-arrow::after {
+        font-size: 16px;
+    }
+    /* Arrow position for small screens can remain 5px from edge of content */
+    /* No change needed here if 5px is still good with 10px container padding */
+  }
+
+  /* Pagination Dots */
+  .photo-carousel-pagination {
+    position: static; /* Render dots below the carousel */
+    padding-top: 20px; /* Space between carousel and dots */
+    text-align: center;
+  }
+  .photo-carousel-pagination-bullet {
+    width: 6px; /* Reduced dot size */
+    height: 6px; /* Reduced dot size */
+    display: inline-block; /* Necessary for proper rendering */
+    background-color: var(--color-secondary-gray, #cbd6de); /* Inactive dot color - greyed out */
+    opacity: 0.6;
+    border-radius: 50%;
+    margin: 0 4px; /* Adjusted margin for smaller dots */
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+  }
+  .photo-carousel-pagination-bullet-active {
+    background-color: var(--color-dark, #1e2022); /* Active dot color - dark */
+    opacity: 1;
+  }
+</style> 

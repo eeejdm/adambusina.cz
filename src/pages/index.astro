@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import settings from '../content/settings/config.json'; // Site-wide settings
 import { Image } from 'astro:assets'; // For optimized images from CMS that are in /src
+import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the carousel
 // If homepage_signature_image is a path in /public, use standard <img> instead.
 
 // For sections like "Why Me", "Testimonials" etc., you would fetch those collections here
@@ -12,20 +13,30 @@ import { Image } from 'astro:assets'; // For optimized images from CMS that are 
 <BaseLayout title="Domů"> {/* Title can be overridden or set in CMS settings */}
   <div class="container">
     <section class="hero-section">
-      <h1>{settings.homepage_hero_heading}</h1>
-      {settings.homepage_hero_subheading && <Fragment set:html={settings.homepage_hero_subheading} />}
-      {settings.homepage_hero_cta_label && settings.homepage_hero_cta_link && (
-        <a href={settings.homepage_hero_cta_link} class="cta-button hero-cta">
-          {settings.homepage_hero_cta_label}
-        </a>
-      )}
+      <div class="hero-content-column">
+        <h1>{settings.homepage_hero_heading}</h1>
+        {/* Ensure subheading (paragraph) is a block and button is a separate block for stacking */}
+        <div class="hero-subheading-wrapper">
+          {settings.homepage_hero_subheading && <Fragment set:html={settings.homepage_hero_subheading} />}
+        </div>
+        {settings.homepage_hero_cta_label && settings.homepage_hero_cta_link && (
+          <a href={settings.homepage_hero_cta_link} class="cta-button hero-cta">
+            {settings.homepage_hero_cta_label}
+          </a>
+        )}
+      </div>
       {settings.homepage_signature_image && (
-        <img src={settings.homepage_signature_image} alt="Signature" class="hero-signature" />
-        // If homepage_signature_image is in src/assets, and you want optimization:
-        // <Image src={/* import signature from '../assets/signature.png'; signature */} alt="Signature" class="hero-signature" width={200}/>
+        <div class="hero-signature-column">
+          <img src={settings.homepage_signature_image} alt="Signature" class="hero-signature" />
+          {/* Placeholder for Astro <Image> component: <Image src={undefined_variable_or_import} alt="Signature optimized" class="hero-signature" width={500}/> */}
+        </div>
       )}
     </section>
+  </div> {/* End of .container for hero section */}
 
+  <PhotoCarousel /> {/* Add the photo carousel here - now outside .container */}
+
+  <div class="container"> {/* Re-open .container for subsequent sections if needed */}
     {/* 
       Placeholder for other homepage sections based on CMS_items.txt 
       - Hero Gallery Images (requires a gallery component)
@@ -47,24 +58,127 @@ import { Image } from 'astro:assets'; // For optimized images from CMS that are 
 
 <style>
   .hero-section {
-    padding: 4rem 0;
-    text-align: center;
+    padding-top: 6rem; /* Increased top padding for more space above hero */
+    padding-bottom: 4rem;
+    display: grid; /* Using grid for layout */
+    grid-template-columns: 1fr 1fr; /* Equal width columns */
+    gap: 3rem; /* Increased gap for better spacing with larger signature */
+    align-items: center;
   }
+
+  .hero-content-column {
+    text-align: left;
+    display: flex; /* Use flexbox for content stacking */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start (left) */
+  }
+  
+  .hero-subheading-wrapper :global(p) {
+    font-size: 1.2rem; /* Default from original hero-section p */
+    max-width: 60ch;
+    margin-bottom: 1.5rem; /* Space below paragraph */
+  }
+
+  .hero-signature-column {
+    text-align: center; /* Center signature in its column */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .hero-section h1 {
-    font-size: 3rem; /* Larger for hero */
+    font-size: 3rem; /* Default from original hero-section h1 */
     margin-bottom: 1rem;
   }
-  .hero-section p {
-    font-size: 1.2rem;
-    max-width: 60ch;
-    margin: 0 auto 1.5rem auto;
-  }
+
   .hero-cta {
-    font-size: 1.1rem;
-    padding: 0.8em 2em;
+    display: inline-block;
+    background-color: var(--color-secondary-gray, #cbd6de);
+    color: var(--color-dark, #1e2022);
+    padding: 12px 18px; /* Explicit px padding */
+    border-radius: 2em; /* Keeps the pill shape relative to font-size/padding */
+    text-decoration: none;
+    font-family: var(--font-headings); /* Poppins */
+    font-size: 14px; /* Explicit px font size */
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    margin-top: 1rem; 
   }
+
+  .hero-cta:hover,
+  .hero-cta:focus {
+    background-color: var(--color-primary-gray, #55616a);
+    color: var(--color-white, #ffffff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .hero-cta::after {
+    content: '→';
+    margin-left: 10px; /* Adjusted for px padding */
+    font-size: 1.2em;  /* Relative to 14px font-size */
+    line-height: 1; /* Ensure arrow aligns well vertically */
+    transition: transform 0.2s ease;
+  }
+
+  .hero-cta:hover::after,
+  .hero-cta:focus::after {
+    transform: translateX(3px);
+  }
+
   .hero-signature {
-    margin-top: 2rem;
-    max-height: 100px; /* Adjust as needed */
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 992px) { 
+    .hero-section {
+      padding-top: 4rem;
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 2rem;
+    }
+    .hero-content-column {
+      text-align: center;
+      order: 1;
+      align-items: center;
+    }
+    .hero-subheading-wrapper :global(p) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-signature-column {
+      order: 2;
+      margin-top: 2rem;
+    }
+    .hero-signature {
+      max-width: 300px;
+    }
+    /* Hero CTA will inherit 14px Poppins from base .hero-cta style on medium screens */
+  }
+
+  @media (max-width: 768px) { 
+    .hero-section h1 {
+      font-size: 2.5rem;
+    }
+    .hero-subheading-wrapper :global(p) {
+      font-size: 1rem;
+    }
+    .hero-signature {
+      max-width: 250px;
+    }
+    .hero-cta {
+      font-size: 13px; /* Slightly smaller for small screens */
+      padding: 10px 15px; /* Slightly smaller padding */
+    }
+    .hero-cta::after {
+       /* font-size will be 1.2em of 13px */
+       margin-left: 8px;
+    }
   }
 </style> 
