@@ -2,8 +2,8 @@ backend:
   name: git-gateway # For Netlify Git Gateway, or use 'github' for direct GitHub OAuth
   branch: main # Branch to update (optional; defaults to master)
 
-media_folder: "src/assets/images/uploads" # Media files will be stored in the repo here
-public_folder: "/assets/images/uploads" # The src attribute for uploaded media will begin with this path
+media_folder: "public/uploads/media" # Changed
+public_folder: "/uploads/media"    # Changed
 publish_mode: editorial_workflow # Optional: enables a review process
 
 collections:
