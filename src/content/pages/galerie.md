@@ -1,5 +1,5 @@
 ---
-title: Galerie
+title: Galerie | Adam Bušina | Fotograf
 page_heading: Galerie
 intro_text: >-
   Vítejte v mojí galerie. Najdete zde výběr fotek z jednotlivých akcí. Jinak
