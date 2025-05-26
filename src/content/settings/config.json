@@ -1,26 +1,41 @@
 {
-  "site_title_part1": "Adam",
-  "site_title_part2": "Busina",
-  "logo_image": "",
-  "header_cta_label": "Rezervovat focení",
-  "header_cta_link": "/kontakt",
-  "footer_intro_text": "",
-  "contact_email": "",
-  "instagram_username": "",
-  "phone_number": "",
-  "copyright_text_base": "Adam Busina Photography",
+  "site_title_part2": "| Fotograf",
   "header_navigation_links": [
-    { "label": "Domů", "url": "/" },
-    { "label": "Galerie", "url": "/galerie" },
-    { "label": "O mně", "url": "/omne" },
-    { "label": "Služby", "url": "/sluzby" },
-    { "label": "Kontakt", "url": "/kontakt" }
+    {
+      "label": "Domů",
+      "url": "/"
+    },
+    {
+      "label": "Galerie",
+      "url": "/galerie"
+    },
+    {
+      "label": "O mně",
+      "url": "/omne"
+    },
+    {
+      "label": "Služby",
+      "url": "/sluzby"
+    },
+    {
+      "label": "Kontakt",
+      "url": "/kontakt"
+    }
   ],
+  "homepage_signature_image": "",
+  "instagram_username": "adamsroams",
+  "footer_intro_text": "## Tady to nemusí končit\n\nDěkuji za návštevu mojí stránky. Pokud máte jakýkoliv dotaz, neváhejte a napište mi. Budu se těšit na vzájemnou spolupráci!",
+  "logo_image": "",
+  "copyright_text_base": "Copyright © 2025 Adam Bušina | Fotograf",
+  "homepage_hero_heading": "Zaznamenám & doručím",
+  "homepage_hero_cta_label": "Objednejte si mě",
   "footer_navigation_links": [],
+  "header_cta_label": "Napište mi",
+  "homepage_hero_subheading": "Jako reportážní fotograf se postarám o to, aby vaše akce byla profesionálně zaznamenána, a vy jste se nemuseli o nic starat.",
   "seo_description": "",
-  "homepage_hero_heading": "Zachytím vaše příběhy",
-  "homepage_hero_subheading": "Autentické a emotivní fotografie, které vám zůstanou navždy.",
-  "homepage_hero_cta_label": "Prohlédnout portfolio",
-  "homepage_hero_cta_link": "/galerie",
-  "homepage_signature_image": ""
-} 
+  "phone_number": "+420 605 856 680",
+  "header_cta_link": "/kontakt",
+  "homepage_hero_cta_link": "/kontakt",
+  "contact_email": "info@adambusina.cz",
+  "site_title_part1": "Adam Bušina"
+}
