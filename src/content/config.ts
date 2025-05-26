@@ -38,9 +38,10 @@ const servicesCollection = defineCollection({
 const testimonialsCollection = defineCollection({
   type: 'content',
   schema: z.object({
-    author: z.string(),
-    text: z.string(),
-    // Add other fields for testimonials here
+    author_name: z.string(),
+    author_context: z.string().optional(),
+    quote: z.string(),
+    display_on_homepage: z.boolean().optional(),
     // e.g., date: z.date().optional(),
     // rating: z.number().min(1).max(5).optional(),
   }),
