@@ -4,19 +4,25 @@
     "testimonials": {
       "type": "object",
       "properties": {
-        "author": {
+        "author_name": {
           "type": "string"
         },
-        "text": {
+        "author_context": {
           "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        },
+        "display_on_homepage": {
+          "type": "boolean"
         },
         "$schema": {
           "type": "string"
         }
       },
       "required": [
-        "author",
-        "text"
+        "author_name",
+        "quote"
       ],
       "additionalProperties": false
     }
