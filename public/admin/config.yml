@@ -89,7 +89,7 @@ collections:
     label: "Testimonials"
     folder: "src/content/testimonials"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slugify fields.author_name}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{author_name}}"
     fields:
       - { label: "Author Name", name: "author_name", widget: "string" }
       - { label: "Author Context (e.g., 'Client' or 'Couple from Wedding X')", name: "author_context", widget: "string", required: false }
