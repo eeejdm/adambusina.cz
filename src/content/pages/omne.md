@@ -2,7 +2,7 @@
 title: O mně | Adam Bušina | Fotograf
 hero_heading: O mně
 hero_background_image: /assets/images/uploads/img2-5241-4-scaled.jpg
-gallery_cta_label: Zobrazit Galerii
+gallery_cta_label: Zobrazit galerii
 gallery_cta_link: /galerie
 contact_cta_label: Kontaktujte mě
 contact_cta_link: /kontakt
