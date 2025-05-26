@@ -3,6 +3,7 @@
     "@astrojs/netlify": "^6.3.4",
     "astro": "^5.8.0",
     "astro-decap-cms-oauth": "^0.5.1",
+    "dependencies": "^0.0.1",
     "sharp": "^0.34.2"
   },
   "scripts": {

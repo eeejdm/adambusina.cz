@@ -1,23 +1,23 @@
-# Node.js & npm
-node_modules/
-dist/
+# Astro
 .astro/
-*.log
+dist/
+*.NOCHECK.ts
+
+# Netlify
+.netlify/
+
+# Node / Dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+pnpm-debug.log*
+*.log
 
-# Astro
-.netlify/
-public/uploads/ # If media is handled elsewhere or you want to prevent accidental commits
+# Vite
+.vite/
 
-# Decap CMS (formerly Netlify CMS)
-# No specific files to ignore by default unless using beta features or local backend files
-# For editorial workflow, Decap CMS creates branches like cms/my-post
-# These are usually handled by the Git hosting platform, not ignored locally.
-
-# Operating System generated files
+# macOS / Windows
 .DS_Store
 ._*
 Thumbs.db
@@ -25,4 +25,13 @@ Thumbs.db
 # Environment variables
 .env
 .env.*
-!.env.example 
+!.env.example
+
+# IDE / Editor specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Optional: If you don't want to commit any uploaded media by default
+# public/uploads/ 

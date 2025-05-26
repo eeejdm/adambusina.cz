@@ -71,25 +71,45 @@ const currentYear = new Date().getFullYear();
     <header class="site-header">
       <div class="container">
         <a href="/" class="logo-link">
-          {settings.logo_image ? (
-            <img src={settings.logo_image} alt={siteTitle} style="max-height: 50px; width: auto;" /> // Standard img tag, adjust style as needed
-          ) : (
-            <span class="logo-text">{settings.site_title_part1} <strong>{settings.site_title_part2}</strong></span>
+          {settings.logo_image && (
+            <img src={settings.logo_image} alt="Logo" class="site-logo" /> /* Alt text simplified */
           )}
+          <span class="logo-text">
+            {settings.site_title_part1} {settings.site_title_part2} 
+          </span>
         </a>
-        <nav class="main-nav">
-          <ul>
-            {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
-              <li><a href={link.url} class={Astro.url.pathname === link.url ? 'is-active' : ''}>{link.label}</a></li>
-            ))}
-          </ul>
-        </nav>
-        {settings.header_cta_label && settings.header_cta_link && (
-          <a href={settings.header_cta_link} class="cta-button header-cta">{settings.header_cta_label}</a>
-        )}
-        {/* <a href="/admin" class="admin-link" aria-label="Admin Login">Admin</a> Simple Admin link for now */}
+        <div class="header-right-group">
+          <nav class="main-nav">
+            <ul>
+              {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
+                <li><a href={link.url} class={Astro.url.pathname === link.url ? 'is-active' : ''}>{link.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+          {settings.header_cta_label && settings.header_cta_link && (
+            <a href={settings.header_cta_link} class="cta-button header-cta">{settings.header_cta_label}</a>
+          )}
+        </div>
+        <button class="hamburger-menu" aria-label="Otevřít menu" aria-expanded="false">
+          <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
       </div>
     </header>
+
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
+          <li><a href={link.url}>{link.label}</a></li>
+        ))}
+        {settings.header_cta_label && settings.header_cta_link && (
+          <li class="mobile-nav-cta"><a href={settings.header_cta_link} class="cta-button">{settings.header_cta_label}</a></li>
+        )}
+      </ul>
+    </div>
 
 		<main>
 			<slot />
@@ -97,32 +117,86 @@ const currentYear = new Date().getFullYear();
 
 		<footer class="site-footer">
       <div class="container">
-        {settings.footer_intro_text && (
-          <div class="footer-intro" set:html={settings.footer_intro_text}></div>
-        )}
-        <div class="footer-columns">
-          <div class="footer-column links">
-            <h4>Navigace</h4>
-            <ul>
-              {(settings.footer_navigation_links && settings.footer_navigation_links.length > 0 
-                ? settings.footer_navigation_links
-                : settings.header_navigation_links
-              ).map((link: NavLink) => <li><a href={link.url}>{link.label}</a></li>) 
-              }
-            </ul>
+        <div class="footer-main-content">
+          <div class="footer-column footer-logo-column">
+            <img src="/uploads/media/favicon_white2-07.png" alt="Logo" class="footer-logo" />
           </div>
-          <div class="footer-column contact">
+          <div class="footer-column footer-intro-column">
+            <h4>Tady to nemusí končit</h4>
+            <p>Děkuji za návštevu mojí stránky. Pokud máte jakýkoliv dotaz, neváhejte a napište mi. Budu se těšit na vzájemnou spolupráci!</p>
+          </div>
+          <div class="footer-column footer-contact-column">
             <h4>Kontakt</h4>
             {settings.contact_email && <p><a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a></p>}
             {settings.phone_number && <p><a href={`tel:${settings.phone_number}`}>{settings.phone_number}</a></p>}
             {settings.instagram_username && <p><a href={`https://instagram.com/${settings.instagram_username}`} target="_blank" rel="noopener noreferrer">Instagram (@{settings.instagram_username})</a></p>}
           </div>
+          <div class="footer-column footer-links-column">
+            <h4>Odkazy</h4>
+            <ul>
+              {(settings.footer_navigation_links && settings.footer_navigation_links.length > 0 
+                ? settings.footer_navigation_links
+                : settings.header_navigation_links // Fallback to header links if footer links not defined
+              ).map((link: NavLink) => <li><a href={link.url}>{link.label}</a></li>) 
+              }
+            </ul>
+          </div>
         </div>
-        <div class="copyright">
-			    <p>&copy; {currentYear} {settings.copyright_text_base || siteTitle}. Všechna práva vyhrazena.</p>
+        <div class="footer-bottom">
+          <div class="footer-bottom-left">
+             <p>&copy; {currentYear} {settings.copyright_text_base || siteTitle}. Všechna práva vyhrazena.</p>
+          </div>
+          <div class="footer-bottom-right">
+            <p>{settings.site_title_part1} {settings.site_title_part2}</p>
+          </div>
         </div>
       </div>
 		</footer>
+
+    <script is:inline>
+      function setupHamburgerMenu() {
+        const hamburgerButton = document.querySelector('.hamburger-menu');
+        const mobileNav = document.getElementById('mobileNav');
+
+        if (hamburgerButton && mobileNav) {
+          // Remove existing listener to prevent duplicates if this function is called multiple times
+          // A more robust way might involve a flag or checking if listener already exists by other means
+          // For now, let's assume direct re-assignment or a simple check suffices.
+          // Cloning and replacing the button is a robust way to clear all listeners:
+          const newButton = hamburgerButton.cloneNode(true);
+          hamburgerButton.parentNode.replaceChild(newButton, hamburgerButton);
+
+          newButton.addEventListener('click', () => {
+            const isOpened = newButton.getAttribute('aria-expanded') === 'true' || false;
+            newButton.setAttribute('aria-expanded', !isOpened);
+            newButton.classList.toggle('is-active');
+            mobileNav.classList.toggle('is-open');
+            mobileNav.setAttribute('aria-hidden', String(isOpened)); // Ensure string value
+            document.body.classList.toggle('no-scroll', !isOpened);
+          });
+
+          // Ensure correct initial ARIA state if menu is closed on page load
+          // (especially if JS re-runs and menu was left open from a previous interaction)
+          if (!mobileNav.classList.contains('is-open')) {
+            newButton.setAttribute('aria-expanded', 'false');
+            mobileNav.setAttribute('aria-hidden', 'true');
+            newButton.classList.remove('is-active');
+            document.body.classList.remove('no-scroll');
+          } else {
+            newButton.setAttribute('aria-expanded', 'true');
+            mobileNav.setAttribute('aria-hidden', 'false');
+            newButton.classList.add('is-active');
+            document.body.classList.add('no-scroll');
+          }
+        }
+      }
+
+      // Run on initial page load
+      setupHamburgerMenu();
+
+      // Run after Astro View Transitions page swap
+      document.addEventListener('astro:page-load', setupHamburgerMenu);
+    </script>
 	</body>
 </html>
 
@@ -139,7 +213,7 @@ const currentYear = new Date().getFullYear();
     --font-text: 'Space Grotesk', sans-serif;
 
     /* Additional vars for layout */
-    --container-max-width: 1200px;
+    --container-max-width: 1240px;
     --container-padding: 1.5rem;
   }
 
@@ -157,6 +231,7 @@ const currentYear = new Date().getFullYear();
     background-color: var(--color-white);
     color: var(--color-dark);
     scroll-behavior: smooth;
+    overflow-y: scroll; /* Prevent layout shift from scrollbar appearing/disappearing */
   }
 
   body {
@@ -244,13 +319,21 @@ const currentYear = new Date().getFullYear();
     border-color: var(--color-primary-gray);
   }
   .cta-button.header-cta {
-     background-color: var(--color-accent-blue);
-     color: var(--color-white);
-     border-color: var(--color-accent-blue);
+     background-color: var(--color-secondary-gray);
+     color: var(--color-dark);
+     border: 1px solid var(--color-secondary-gray);
+     border-radius: 18px;
+     font-weight: 600;
+     font-size: 0.875rem;
+     padding: 0.6em 1.2em;
+     text-decoration: none;
+     line-height: normal;
   }
   .cta-button.header-cta:hover, .cta-button.header-cta:focus {
       background-color: var(--color-primary-gray);
+      color: var(--color-white);
       border-color: var(--color-primary-gray);
+      text-decoration: none;
   }
 
 
@@ -271,37 +354,61 @@ const currentYear = new Date().getFullYear();
   }
   .logo-link {
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .logo-link:hover,
+  .logo-link:focus {
+    text-decoration: none; /* Remove underline for logo link specifically */
+  }
+  .site-logo {
+    max-height: 50px;
+    width: auto;
+    display: block;
   }
   .logo-text {
     font-family: var(--font-headings);
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 0.875rem;
+    font-weight: 600;
     color: var(--color-dark);
+    line-height: 1;
+    text-decoration: none;
   }
-  .logo-text strong {
-    font-weight: 700;
+  .logo-text strong.logo-text-separator, 
+  .logo-text strong.logo-text-description {
+    font-weight: 600;
+  }
+
+  .header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
   .main-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    align-items: center; /* Align items vertically */
+    align-items: center;
     gap: 1.5rem;
   }
   .main-nav a {
     font-family: var(--font-headings);
     color: var(--color-dark);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.875rem;
     padding: 0.5em 0;
     position: relative;
   }
   .main-nav a:hover,
+  .main-nav a:focus {
+    color: var(--color-primary-gray);
+    text-decoration: none;
+  }
   .main-nav a.is-active {
     color: var(--color-accent-blue);
-    /* text-decoration: underline; */
   }
   .main-nav a.is-active::after {
     content: '';
@@ -313,51 +420,287 @@ const currentYear = new Date().getFullYear();
     background-color: var(--color-accent-blue);
   }
 
+  .hamburger-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1010;
+  }
+  .hamburger-icon {
+    display: block;
+    width: 24px;
+    height: 18px;
+    position: relative;
+  }
+  .hamburger-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: var(--color-dark);
+    border-radius: 2px;
+    left: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+  .hamburger-icon span:nth-child(1) {
+    top: 0px;
+  }
+  .hamburger-icon span:nth-child(2) {
+    top: 8px;
+  }
+  .hamburger-icon span:nth-child(3) {
+    top: 16px;
+  }
+
+  /* Responsive Styles for Header */
+  @media (max-width: 768px) {
+    .header-right-group {
+      display: none;
+    }
+    .hamburger-menu {
+      display: block;
+    }
+    .site-logo {
+      max-height: 40px;
+    }
+    .logo-text {
+       display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .site-logo {
+      max-height: 30px;
+    }
+    .logo-text {
+      display: none;
+    }
+  }
+
+  /* Hamburger Icon Animation */
+  .hamburger-menu.is-active .hamburger-icon span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger-menu.is-active .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-menu.is-active .hamburger-icon span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Mobile Navigation Menu Styles */
+  .mobile-nav {
+    display: none; /* Hidden by default, shown by JS adding .is-open */
+    background-color: var(--color-white); /* Changed to light background */
+    z-index: 999; /* Ensure it's above main content but potentially below a sticky header if header was transparent */
+    padding: 1rem var(--container-padding); /* Adjust padding */
+    text-align: left; /* Changed from center for a more standard dropdown feel */
+    border-bottom: 1px solid #eee; /* Similar to header border */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); /* Similar to header shadow */
+  }
+  .mobile-nav.is-open {
+    display: block;
+  }
+  .mobile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .mobile-nav ul li {
+    margin-bottom: 0; /* Remove bottom margin for tighter list */
+  }
+  .mobile-nav ul li a {
+    font-family: var(--font-headings);
+    color: var(--color-dark); /* Changed to dark text */
+    text-decoration: none;
+    font-size: 1rem; /* Adjusted size for dropdown */
+    font-weight: 500;
+    display: block;
+    padding: 0.75rem 0; /* Vertical padding, no horizontal padding needed if text-align left */
+    border-bottom: 1px solid #f0f0f0; /* Separator for links */
+  }
+  .mobile-nav ul li:last-child a {
+    border-bottom: none; /* No border for the last item */
+  }
+  .mobile-nav ul li a:hover,
+  .mobile-nav ul li a:focus {
+    color: var(--color-accent-blue);
+    background-color: #f9f9f9; /* Slight hover background */
+  }
+  .mobile-nav .mobile-nav-cta {
+    margin-top: 1rem; /* Space above CTA */
+    padding-bottom: 0.5rem; /* Space below CTA */
+  }
+  .mobile-nav .mobile-nav-cta a.cta-button {
+    background-color: var(--color-secondary-gray);
+    color: var(--color-dark);
+    border-color: var(--color-secondary-gray);
+    padding: 0.8em 1.5em;
+    font-size: 1rem; /* Adjusted size */
+    display: block; /* Make it full width */
+    text-align: center;
+  }
+  .mobile-nav .mobile-nav-cta a.cta-button:hover,
+  .mobile-nav .mobile-nav-cta a.cta-button:focus {
+    background-color: var(--color-primary-gray);
+    color: var(--color-white);
+    border-color: var(--color-primary-gray);
+  }
+
+  /* Prevent body scroll when mobile menu is open - STILL APPLIES if menu can get long */
+  body.no-scroll {
+    overflow: hidden;
+  }
+
   /* Footer Styles */
   .site-footer {
     background-color: var(--color-dark);
-    color: var(--color-white);
+    color: var(--color-primary-gray); /* Default text color for footer */
     padding: 3rem 0 1.5rem;
     margin-top: 3rem;
   }
   .site-footer a {
     color: var(--color-secondary-gray);
   }
-  .site-footer a:hover {
+  .site-footer a:hover, .site-footer a:focus {
     color: var(--color-white);
+    text-decoration: underline;
   }
-  .footer-intro {
+
+  .footer-main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem; /* Gap between columns */
     margin-bottom: 2rem;
-    max-width: 60ch;
-    font-size: 0.95em;
-    opacity: 0.9;
+  }
+
+  .footer-column {
+    flex: 1 1 100%; /* Default to full width for smallest screens */
+    min-width: 200px; /* Minimum width before wrapping */
+  }
+
+  .footer-logo-column {
+    display: flex;
+    align-items: flex-start; /* Align logo to the top */
+  }
+  .footer-logo {
+    max-height: 70px; /* Adjust as needed */
+    width: auto;
+  }
+  
+  .footer-intro-column .footer-intro {
+    max-width: none; /* Override previous max-width if any */
   }
   .footer-intro p:last-child {
     margin-bottom: 0;
   }
-  .footer-columns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-  .footer-column {
-    flex: 1 1 200px; /* Flex grow, shrink, basis */
-  }
+
   .footer-column h4 {
     font-family: var(--font-headings);
     color: var(--color-white);
     margin-bottom: 1rem;
     font-weight: 600;
+    font-size: 1.1rem; /* Slightly smaller than body h4 for hierarchy */
   }
+
   .footer-column ul {
     list-style: none;
     padding: 0;
+    margin:0;
   }
   .footer-column ul li {
     margin-bottom: 0.5rem;
   }
-  .copyright {
+  .footer-column p {
+    margin-bottom: 0.5rem; /* Tighter spacing for contact details */
+    font-size: 0.95em;
+    color: var(--color-secondary-gray); /* Changed text color to secondary gray */
+  }
+  .footer-column p:last-child {
+    margin-bottom: 0;
+  }
+
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-primary-gray);
+    font-size: 0.9em;
+    color: var(--color-secondary-gray); /* Copyright and site title color */
+  }
+  .footer-bottom-left,
+  .footer-bottom-right {
+    text-align: left;
+    flex-basis: 50%; /* Give some basis to allow wrapping */
+  }
+  .footer-bottom-left {
+    text-align: left;
+    flex-basis: 50%; /* Give some basis to allow wrapping */
+  }
+  .footer-bottom-right {
+    text-align: right;
+    flex-basis: 50%;
+  }
+
+  /* Responsive column layout for footer */
+  /* Small screens (1 column) - already default by flex: 1 1 100% */
+
+  /* Medium screens (2 columns) */
+  @media (min-width: 576px) { /* Adjust breakpoint as needed */
+    .footer-column {
+      flex: 1 1 calc(50% - 1rem); /* 2 columns, accounting for gap */
+    }
+    .footer-logo-column, .footer-intro-column {
+       flex-basis: calc(50% - 1rem);
+    }
+     .footer-contact-column, .footer-links-column {
+       flex-basis: calc(50% - 1rem);
+    }
+  }
+
+  /* Large screens (4 columns as per initial flex settings for wider items) */
+  /* Re-ordering columns visually from right: logo, intro, contact, links */
+  @media (min-width: 992px) { /* Adjust breakpoint as needed for 4 columns */
+    .footer-column {
+      flex: 1 1 calc(25% - 1.5rem); /* 4 columns, accounting for gap */
+    }
+    .footer-logo-column { order: 1; }       /* Farthest left */
+    .footer-intro-column { order: 2; }      /* Second from left */
+    .footer-contact-column { order: 3; }    /* Third from left */
+    .footer-links-column { order: 4; }      /* Farthest right */
+
+    /* Specific flex basis if needed for uneven columns */
+    /* Example: .footer-logo-column { flex-basis: 15%; } */
+    /*          .footer-intro-column { flex-basis: 35%; } */
+    /*          .footer-contact-column { flex-basis: 25%; } */
+    /*          .footer-links-column { flex-basis: 25%; } */
+  }
+  
+  @media (max-width: 575.98px) { /* Ensure bottom elements stack on smallest screens */
+    .footer-bottom {
+      flex-direction: column;
+      gap: 0.5rem; /* Add a small gap when stacked */
+    }
+    .footer-bottom-left,
+    .footer-bottom-right {
+      text-align: center; /* Center text when stacked */
+      flex-basis: 100%;
+    }
+    .footer-column {
+      text-align: center;
+    }
+    .footer-logo-column {
+      justify-content: center; /* Center the logo image within its flex container */
+    }
+  }
+
+
+  .copyright { /* This class is no longer used directly as a wrapper for the whole line, but kept for now */
     text-align: center;
     font-size: 0.9em;
     opacity: 0.8;
