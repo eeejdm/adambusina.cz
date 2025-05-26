@@ -13,6 +13,7 @@ collections:
       - label: "Site Configuration"
         name: "config"
         file: "src/content/settings/config.json" # Store as JSON
+        format: "json" # Explicitly set format
         fields:
           - { label: "Site Title Part 1", name: "site_title_part1", widget: "string", default: "Adam" }
           - { label: "Site Title Part 2", name: "site_title_part2", widget: "string", default: "Busina" }
