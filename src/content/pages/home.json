@@ -1,10 +1,9 @@
 {
-  "title": "Domů",
-  "homepage_hero_heading": "Zachytím vaše příběhy",
-  "homepage_hero_subheading": "Autentické a emotivní fotografie, které vám zůstanou navždy.",
-  "homepage_hero_cta_label": "Prohlédnout portfolio",
-  "homepage_hero_cta_link": "/galerie",
-  "homepage_signature_image": null,
+  "homepage_signature_image": "/uploads/media/podpis-1.png",
+  "homepage_hero_heading": "Zaznamenám & doručím",
+  "homepage_hero_cta_label": "Objednejte si mě",
+  "homepage_hero_subheading": "Jako reportážní fotograf se postarám o to, aby vaše akce byla profesionálně zaznamenána, a vy jste se nemuseli o nic starat.",
+  "gallery_cta_link": "/galerie",
   "carousel_images": [
     {
       "src": "/uploads/media/image1.jpg",
@@ -39,7 +38,8 @@
       "alt": "Carousel image 8"
     }
   ],
+  "title": "Domů",
   "gallery_cta_label": "Zobrazit celou galerii",
-  "gallery_cta_link": "/galerie",
-  "seo_description": ""
-} 
+  "seo_description": "",
+  "homepage_hero_cta_link": "/kontakt"
+}
