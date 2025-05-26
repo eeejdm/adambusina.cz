@@ -1,90 +1,380 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+// import { Image } from 'astro:assets'; // Using standard img tag for CMS-sourced logo for simplicity
+import settingsData from '../../src/content/settings/config.json'; // Renamed to avoid conflict
 
-export interface Props {
-	title: string;
-    description?: string;
+interface NavLink {
+  label: string;
+  url: string;
 }
 
-const { title, description } = Astro.props;
+interface SiteSettings {
+  site_title_part1: string;
+  site_title_part2: string;
+  logo_image?: string;
+  header_cta_label?: string;
+  header_cta_link?: string;
+  footer_intro_text?: string;
+  contact_email?: string;
+  instagram_username?: string;
+  phone_number?: string;
+  copyright_text_base?: string;
+  header_navigation_links: NavLink[];
+  footer_navigation_links: NavLink[];
+  seo_description?: string;
+  // Homepage specific fields (add all from your JSON if needed here for type safety)
+  homepage_hero_heading?: string;
+  homepage_hero_subheading?: string;
+  homepage_hero_cta_label?: string;
+  homepage_hero_cta_link?: string;
+  homepage_signature_image?: string;
+}
+
+const settings: SiteSettings = settingsData as SiteSettings;
+
+export interface Props {
+	title?: string;
+  description?: string;
+}
+
+const { 
+  title: pageTitle,
+  description: pageDescription 
+} = Astro.props;
+
+const siteTitle = `${settings.site_title_part1} ${settings.site_title_part2}`;
+const effectiveTitle = pageTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
+const effectiveDescription = pageDescription || settings.seo_description || 'Adam Busina Photography Portfolio';
+
+const currentYear = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="cs">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description || 'Adam Busina Photography Portfolio'} />
+		<meta name="description" content={effectiveDescription} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" /> {/* TODO: Replace with actual favicon */}
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-        <ViewTransitions />
-        <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+		<title>{effectiveTitle}</title>
+
+    {/* Fonts from resources.txt */}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <ViewTransitions />
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	</head>
 	<body>
-		<nav>
-			<a href="/">Home</a>
-			<a href="/admin">Admin</a> {/* Link to Decap CMS admin */}
-		</nav>
+    <header class="site-header">
+      <div class="container">
+        <a href="/" class="logo-link">
+          {settings.logo_image ? (
+            <img src={settings.logo_image} alt={siteTitle} style="max-height: 50px; width: auto;" /> // Standard img tag, adjust style as needed
+          ) : (
+            <span class="logo-text">{settings.site_title_part1} <strong>{settings.site_title_part2}</strong></span>
+          )}
+        </a>
+        <nav class="main-nav">
+          <ul>
+            {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
+              <li><a href={link.url} class={Astro.url.pathname === link.url ? 'is-active' : ''}>{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        {settings.header_cta_label && settings.header_cta_link && (
+          <a href={settings.header_cta_link} class="cta-button header-cta">{settings.header_cta_label}</a>
+        )}
+        {/* <a href="/admin" class="admin-link" aria-label="Admin Login">Admin</a> Simple Admin link for now */}
+      </div>
+    </header>
+
 		<main>
 			<slot />
 		</main>
-		<footer>
-			<p>&copy; {new Date().getFullYear()} Adam Busina</p>
+
+		<footer class="site-footer">
+      <div class="container">
+        {settings.footer_intro_text && (
+          <div class="footer-intro" set:html={settings.footer_intro_text}></div>
+        )}
+        <div class="footer-columns">
+          <div class="footer-column links">
+            <h4>Navigace</h4>
+            <ul>
+              {(settings.footer_navigation_links && settings.footer_navigation_links.length > 0 
+                ? settings.footer_navigation_links
+                : settings.header_navigation_links
+              ).map((link: NavLink) => <li><a href={link.url}>{link.label}</a></li>) 
+              }
+            </ul>
+          </div>
+          <div class="footer-column contact">
+            <h4>Kontakt</h4>
+            {settings.contact_email && <p><a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a></p>}
+            {settings.phone_number && <p><a href={`tel:${settings.phone_number}`}>{settings.phone_number}</a></p>}
+            {settings.instagram_username && <p><a href={`https://instagram.com/${settings.instagram_username}`} target="_blank" rel="noopener noreferrer">Instagram (@{settings.instagram_username})</a></p>}
+          </div>
+        </div>
+        <div class="copyright">
+			    <p>&copy; {currentYear} {settings.copyright_text_base || siteTitle}. Všechna práva vyhrazena.</p>
+        </div>
+      </div>
 		</footer>
 	</body>
 </html>
+
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #f0f0f0;
-		background-size: 224px;
-	}
-	body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    main {
-        flex-grow: 1;
-        max-width: 80ch;
-        margin: auto;
-        padding: 1rem;
-    }
-	nav {
-		background: #fff;
-		padding: 1rem;
-		text-align: center;
-		border-bottom: 1px solid #ddd;
-	}
-	nav a {
-		margin: 0 0.5rem;
-		text-decoration: none;
-		color: #333;
-	}
-	footer {
-		background: #333;
-		color: #fff;
-		text-align: center;
-		padding: 1rem;
-		margin-top: auto;
-	}
-	img {
-		max-width: 100%;
-		height: auto;
-		border-radius: 8px;
-	}
+  /* CSS Variables from resources.txt */
+  :root {
+    --color-white: #ffffff;
+    --color-dark: #1e2022; /* (dark, black, text, footer background) */
+    --color-primary-gray: #55616a; /* (primary, buttons:hover, some sections background) */
+    --color-secondary-gray: #cbd6de; /* (secondary, buttons primary) */
+    --color-accent-blue: #4b9dc0; /* (accent, nav links:active, text highlighting) */
+
+    --font-headings: 'Poppins', sans-serif;
+    --font-text: 'Space Grotesk', sans-serif;
+
+    /* Additional vars for layout */
+    --container-max-width: 1200px;
+    --container-padding: 1.5rem;
+  }
+
+  /* Basic Reset & Global Styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: var(--font-text);
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-white);
+    color: var(--color-dark);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex-grow: 1;
+  }
+
+  .container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--color-dark);
+  }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.25rem; }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--color-accent-blue);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover, a:focus {
+    color: var(--color-primary-gray);
+    text-decoration: underline;
+  }
+
+  img, svg {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes bottom space under images */
+  }
+
+  ul {
+    list-style: none; /* Removing default list style, will apply custom if needed */
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  ol {
+    list-style-position: inside;
+    padding-left: 1.5em; 
+    margin-bottom: 1rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 0.75em 1.5em;
+    background-color: var(--color-secondary-gray);
+    color: var(--color-dark);
+    font-family: var(--font-headings);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border: 1px solid var(--color-primary-gray);
+  }
+
+  .cta-button:hover, .cta-button:focus {
+    background-color: var(--color-primary-gray);
+    color: var(--color-white);
+    text-decoration: none;
+    border-color: var(--color-primary-gray);
+  }
+  .cta-button.header-cta {
+     background-color: var(--color-accent-blue);
+     color: var(--color-white);
+     border-color: var(--color-accent-blue);
+  }
+  .cta-button.header-cta:hover, .cta-button.header-cta:focus {
+      background-color: var(--color-primary-gray);
+      border-color: var(--color-primary-gray);
+  }
+
+
+  /* Header Styles */
+  .site-header {
+    background-color: var(--color-white);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-link {
+    text-decoration: none;
+    display: inline-block;
+  }
+  .logo-text {
+    font-family: var(--font-headings);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-dark);
+  }
+  .logo-text strong {
+    font-weight: 700;
+  }
+  .main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 1.5rem;
+  }
+  .main-nav a {
+    font-family: var(--font-headings);
+    color: var(--color-dark);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5em 0;
+    position: relative;
+  }
+  .main-nav a:hover,
+  .main-nav a.is-active {
+    color: var(--color-accent-blue);
+    /* text-decoration: underline; */
+  }
+  .main-nav a.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-accent-blue);
+  }
+
+  /* Footer Styles */
+  .site-footer {
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    padding: 3rem 0 1.5rem;
+    margin-top: 3rem;
+  }
+  .site-footer a {
+    color: var(--color-secondary-gray);
+  }
+  .site-footer a:hover {
+    color: var(--color-white);
+  }
+  .footer-intro {
+    margin-bottom: 2rem;
+    max-width: 60ch;
+    font-size: 0.95em;
+    opacity: 0.9;
+  }
+  .footer-intro p:last-child {
+    margin-bottom: 0;
+  }
+  .footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .footer-column {
+    flex: 1 1 200px; /* Flex grow, shrink, basis */
+  }
+  .footer-column h4 {
+    font-family: var(--font-headings);
+    color: var(--color-white);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-column ul li {
+    margin-bottom: 0.5rem;
+  }
+  .copyright {
+    text-aligencenter;
+    font-size: 0.9em;
+    opacity: 0.8;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-primary-gray);
+  }
+
+  /* Utility classes */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 </style> 

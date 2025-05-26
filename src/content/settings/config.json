@@ -1,0 +1,26 @@
+{
+  "site_title_part1": "Adam",
+  "site_title_part2": "Busina",
+  "logo_image": "",
+  "header_cta_label": "Rezervovat focení",
+  "header_cta_link": "/kontakt",
+  "footer_intro_text": "",
+  "contact_email": "",
+  "instagram_username": "",
+  "phone_number": "",
+  "copyright_text_base": "Adam Busina Photography",
+  "header_navigation_links": [
+    { "label": "Domů", "url": "/" },
+    { "label": "Galerie", "url": "/galerie" },
+    { "label": "O mně", "url": "/omne" },
+    { "label": "Služby", "url": "/sluzby" },
+    { "label": "Kontakt", "url": "/kontakt" }
+  ],
+  "footer_navigation_links": [],
+  "seo_description": "",
+  "homepage_hero_heading": "Zachytím vaše příběhy",
+  "homepage_hero_subheading": "Autentické a emotivní fotografie, které vám zůstanou navždy.",
+  "homepage_hero_cta_label": "Prohlédnout portfolio",
+  "homepage_hero_cta_link": "/galerie",
+  "homepage_signature_image": ""
+} 

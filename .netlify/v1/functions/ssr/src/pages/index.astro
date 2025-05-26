@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all galleries
+const galleries = await getCollection('galleries');
+---
+
+<BaseLayout title="Adam Busina Photography" description="Portfolio of Adam Busina, a photographer.">
+	<h1>Welcome to My Photography Portfolio</h1>
+	<p>This is a showcase of my work. Browse through the galleries to see more.</p>
+
+	<h2>Galleries</h2>
+	{galleries.length === 0 ? (
+		<p>No galleries published yet. Stay tuned!</p>
+	) : (
+		<ul>
+			{galleries.map(gallery => (
+				<li>
+					<a href={`/galleries/${gallery.slug}`}>{gallery.data.title}</a>
+					{gallery.data.description && <p>{gallery.data.description}</p>}
+				</li>
+			))}
+		</ul>
+	)}
+
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        li a {
+            font-size: 1.5em;
+            color: var(--accent-dark);
+            text-decoration: none;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+        li p {
+            margin-top: 0.5rem;
+            color: #555;
+        }
+    </style>
+</BaseLayout> 

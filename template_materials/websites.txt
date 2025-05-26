@@ -1,0 +1,5 @@
+Domů - homepage
+Galerie - + subpages for each gallery/event
+O mně
+Služby
+Kontakt

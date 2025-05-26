@@ -4,20 +4,149 @@ backend:
 
 media_folder: "src/assets/images/uploads" # Media files will be stored in the repo here
 public_folder: "/assets/images/uploads" # The src attribute for uploaded media will begin with this path
+publish_mode: editorial_workflow # Optional: enables a review process
 
 collections:
-  - name: "galleries" # Used in routes, e.g., /admin/collections/galleries
-    label: "Galleries" # Used in the UI
-    folder: "src/content/galleries" # The path to the folder where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
-    fields: # The fields for each document, usually in frontmatter
+  - name: "settings"
+    label: "Global Settings"
+    files:
+      - label: "Site Configuration"
+        name: "config"
+        file: "src/content/settings/config.json" # Store as JSON
+        fields:
+          - { label: "Site Title Part 1", name: "site_title_part1", widget: "string", default: "Adam" }
+          - { label: "Site Title Part 2", name: "site_title_part2", widget: "string", default: "Busina" }
+          - { label: "Logo Image", name: "logo_image", widget: "image", required: false }
+          - { label: "Header CTA Label", name: "header_cta_label", widget: "string", required: false, default: "Rezervovat focení" }
+          - { label: "Header CTA Link", name: "header_cta_link", widget: "string", required: false, default: "/kontakt" }
+          - { label: "Footer Intro Text", name: "footer_intro_text", widget: "markdown", required: false }
+          - { label: "Contact Email", name: "contact_email", widget: "string", required: false }
+          - { label: "Instagram Username (without @)", name: "instagram_username", widget: "string", required: false }
+          - { label: "Phone Number", name: "phone_number", widget: "string", required: false }
+          - { label: "Copyright Text Base", name: "copyright_text_base", widget: "string", required: false, default: "Adam Busina Photography" }
+          - label: "Header Navigation Links"
+            name: "header_navigation_links"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Footer Navigation Links"
+            name: "footer_navigation_links"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - { label: "Global SEO Description", name: "seo_description", widget: "text", required: false }
+          # Homepage specific content - might be better as a 'homepage' file collection or directly in index.astro if complex
+          - { label: "Homepage - Hero Heading", name: "homepage_hero_heading", widget: "string", default: "Zachytím vaše příběhy" }
+          - { label: "Homepage - Hero Subheading", name: "homepage_hero_subheading", widget: "markdown", default: "Autentické a emotivní fotografie, které vám zůstanou navždy." }
+          - { label: "Homepage - Hero CTA Label", name: "homepage_hero_cta_label", widget: "string", default: "Prohlédnout portfolio" }
+          - { label: "Homepage - Hero CTA Link", name: "homepage_hero_cta_link", widget: "string", default: "/galerie" }
+          - { label: "Homepage - Signature Image", name: "homepage_signature_image", widget: "image", required: false }
+          # ... other homepage specific fields from CMS_items.txt can be added here if managed globally ...
+
+  - name: "galleries"
+    label: "Galleries"
+    folder: "src/content/galleries"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Cover Image", name: "cover", widget: "image" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Images", name: "images", widget: "list", fields: [
-          { label: "Image", name: "image", widget: "image" },
-          { label: "Alt Text", name: "alt", widget: "string" }
-        ]} 
+      - { label: "Slug (URL part)", name: "slug", widget: "string", required: false, hint: "Optional. If empty, generated from title. E.g., 'my-first-gallery'" }
+      - { label: "Event Date", name: "event_date", widget: "datetime" }
+      - { label: "Cover Image", name: "cover_image", widget: "image" }
+      - { label: "Description", name: "description", widget: "markdown", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        summary: "{{fields.alt}}"
+        fields:
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Alt Text", name: "alt", widget: "string" }
+      - { label: "Page SEO Title", name: "seo_title", widget: "string", required: false, hint: "Optional. Defaults to gallery title." }
+      - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false, hint: "Optional. Defaults to global SEO description or gallery description." }
+
+  - name: "service_packages"
+    label: "Service Packages"
+    folder: "src/content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug (URL part)", name: "slug", widget: "string", required: false, hint: "Optional. If empty, generated from title." }
+      - { label: "Description", name: "description", widget: "markdown" }
+      - label: "Inclusions"
+        name: "inclusions"
+        widget: "list"
+        summary: "{{fields.text}}"
+        fields:
+          - { label: "Text", name: "text", widget: "string"}
+      - { label: "Price", name: "price", widget: "string", required: false }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+
+  - name: "testimonials"
+    label: "Testimonials"
+    folder: "src/content/testimonials"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slugify author_name}}"
+    fields:
+      - { label: "Author Name", name: "author_name", widget: "string" }
+      - { label: "Author Context (e.g., 'Client' or 'Couple from Wedding X')", name: "author_context", widget: "string", required: false }
+      - { label: "Quote", name: "quote", widget: "text" } # Textarea widget
+      - { label: "Display on Homepage", name: "display_on_homepage", widget: "boolean", default: false }
+
+  - name: "pages"
+    label: "Static Pages"
+    files:
+      - label: "About Page"
+        name: "about"
+        file: "src/content/pages/omne.md" # Will render at /omne
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "O mně" }
+          - { label: "Hero Heading", name: "hero_heading", widget: "string", required: false }
+          - { label: "Hero Background Image", name: "hero_background_image", widget: "image", required: false }
+          - { label: "Main Content", name: "body", widget: "markdown" }
+          - { label: "Gallery CTA Label", name: "gallery_cta_label", widget: "string", required: false, default: "Moje práce" }
+          - { label: "Gallery CTA Link", name: "gallery_cta_link", widget: "string", required: false, default: "/galerie" }
+          - { label: "Contact CTA Label", name: "contact_cta_label", widget: "string", required: false, default: "Napište mi" }
+          - { label: "Contact CTA Link", name: "contact_cta_link", widget: "string", required: false, default: "/kontakt" }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false }
+
+      - label: "Services Page (General Info)"
+        name: "services_info" # This is for the main /sluzby page content, not the individual packages
+        file: "src/content/pages/sluzby.md" # Will render at /sluzby
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Služby" }
+          - { label: "Hero Heading", name: "hero_heading", widget: "string", required: false }
+          - { label: "Hero Background Image", name: "hero_background_image", widget: "image", required: false }
+          - { label: "Hero CTA Text", name: "hero_cta_text", widget: "markdown", required: false }
+          - { label: "Hero CTA Label", name: "hero_cta_label", widget: "string", required: false, default: "Nezávazně poptat" }
+          - { label: "Hero CTA Link", name: "hero_cta_link", widget: "string", required: false, default: "/kontakt" }
+          - { label: "Main Content/Intro (above service packages)", name: "body", widget: "markdown", required: false }
+          - { label: "Travel Fee Text", name: "travel_fee_text", widget: "string", required: false }
+          - { label: "Gallery CTA Label", name: "gallery_cta_label", widget: "string", required: false, default: "Ukázky mé práce" }
+          - { label: "Gallery CTA Link", name: "gallery_cta_link", widget: "string", required: false, default: "/galerie" }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false }
+
+      - label: "Contact Page"
+        name: "contact"
+        file: "src/content/pages/kontakt.md" # Will render at /kontakt
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Kontakt" }
+          - { label: "Billing Details Heading", name: "billing_details_heading", widget: "string", required: false, default: "Fakturační údaje" }
+          - { label: "Billing Details Content", name: "billing_details_content", widget: "markdown", required: false }
+          - { label: "Form Heading", name: "form_heading", widget: "string", required: false, default: "Napište mi" }
+          - { label: "Form Intro Text", name: "form_intro_text", widget: "markdown", required: false }
+          - { label: "Map Embed Code (HTML)", name: "map_embed_code", widget: "text", required: false } # Using text for HTML embed
+          - { label: "Main Content (e.g., above or below form)", name: "body", widget: "markdown", required: false }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false }
+
+      - label: "Gallery Overview Page" # For the main /galleries page
+        name: "gallery_overview"
+        file: "src/content/pages/galerie.md" # Will render at /galerie
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Galerie" }
+          - { label: "Page Heading", name: "page_heading", widget: "string", required: false, default: "Moje Portfolio" }
+          - { label: "Intro Text", name: "intro_text", widget: "markdown", required: false }
+          - { label: "Disclaimer Text", name: "disclaimer_text", widget: "markdown", required: false }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false } 

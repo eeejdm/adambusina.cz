@@ -1,52 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import settings from '../content/settings/config.json'; // Site-wide settings
+import { Image } from 'astro:assets'; // For optimized images from CMS that are in /src
+// If homepage_signature_image is a path in /public, use standard <img> instead.
 
-// Fetch all galleries
-const galleries = await getCollection('galleries');
+// For sections like "Why Me", "Testimonials" etc., you would fetch those collections here
+// import { getCollection } from 'astro:content';
+// const testimonials = await getCollection('testimonials', ({ data }) => data.display_on_homepage === true);
+// const whyMeFeatures = settings.homepage_why_me_features; // Assuming this is added to settings
 ---
+<BaseLayout title="Domů"> {/* Title can be overridden or set in CMS settings */}
+  <div class="container">
+    <section class="hero-section">
+      <h1>{settings.homepage_hero_heading}</h1>
+      {settings.homepage_hero_subheading && <Fragment set:html={settings.homepage_hero_subheading} />}
+      {settings.homepage_hero_cta_label && settings.homepage_hero_cta_link && (
+        <a href={settings.homepage_hero_cta_link} class="cta-button hero-cta">
+          {settings.homepage_hero_cta_label}
+        </a>
+      )}
+      {settings.homepage_signature_image && (
+        <img src={settings.homepage_signature_image} alt="Signature" class="hero-signature" />
+        // If homepage_signature_image is in src/assets, and you want optimization:
+        // <Image src={/* import signature from '../assets/signature.png'; signature */} alt="Signature" class="hero-signature" width={200}/>
+      )}
+    </section>
 
-<BaseLayout title="Adam Busina Photography" description="Portfolio of Adam Busina, a photographer.">
-	<h1>Welcome to My Photography Portfolio</h1>
-	<p>This is a showcase of my work. Browse through the galleries to see more.</p>
+    {/* 
+      Placeholder for other homepage sections based on CMS_items.txt 
+      - Hero Gallery Images (requires a gallery component)
+      - Why Me Section (heading, intro, CTA, features list)
+      - About Snippet (pre-heading, heading, intro, CTA, portrait, key points)
+      - Services Snippet (heading, intro, CTA, service items list)
+      - Testimonials Snippet (heading, CTA, testimonials list)
+      - Contact Form Snippet (heading)
+    */}
 
-	<h2>Galleries</h2>
-	{galleries.length === 0 ? (
-		<p>No galleries published yet. Stay tuned!</p>
-	) : (
-		<ul>
-			{galleries.map(gallery => (
-				<li>
-					<a href={`/galleries/${gallery.slug}`}>{gallery.data.title}</a>
-					{gallery.data.description && <p>{gallery.data.description}</p>}
-				</li>
-			))}
-		</ul>
-	)}
+    <section style="padding: 4rem 0; text-align: center;">
+        <h2>Další sekce přijdou sem...</h2>
+        <p>Tato stránka bude sestavena z různých komponent a obsahu definovaného v CMS.</p>
+        <p><a href="/galerie" class="cta-button">Prohlédnout Galerie</a></p>
+    </section>
 
-    <style>
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        li a {
-            font-size: 1.5em;
-            color: var(--accent-dark);
-            text-decoration: none;
-        }
-        li a:hover {
-            text-decoration: underline;
-        }
-        li p {
-            margin-top: 0.5rem;
-            color: #555;
-        }
-    </style>
-</BaseLayout> 
+  </div>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding: 4rem 0;
+    text-align: center;
+  }
+  .hero-section h1 {
+    font-size: 3rem; /* Larger for hero */
+    margin-bottom: 1rem;
+  }
+  .hero-section p {
+    font-size: 1.2rem;
+    max-width: 60ch;
+    margin: 0 auto 1.5rem auto;
+  }
+  .hero-cta {
+    font-size: 1.1rem;
+    padding: 0.8em 2em;
+  }
+  .hero-signature {
+    margin-top: 2rem;
+    max-height: 100px; /* Adjust as needed */
+  }
+</style> 

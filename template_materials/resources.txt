@@ -1,0 +1,3 @@
+Colors - #4b9dc0 (white background), #1e2022 (dark, black, text, footer background), #55616a (primary, buttons:hover, some sections background), #cbd6de (secondary, buttons primary), #4b9dc0 (accent, nav links:active, text highlighting) 
+
+Fonts - Poppins (headings, buttons, header), Space Grotesk (text, paragraphs)

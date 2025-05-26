@@ -1,0 +1,13 @@
+Domů - header, hero (heading, text, button, signature, photo carrousel), why-me section (3 cards - img + text), about-me section, services section (3 cards - img + text), testimonials section, contact form, footer
+
+Galerie - header, intro section, individual gallery cards, footer
+
+Galerie subpages - header, gallery, footer
+
+O mně - header, hero (background image + heading), card about-me, footer
+
+Služby - header, hero (background image + heading), services cards, footer
+
+Kontakt - header, contact content, card with contact form and embedded map, footer
+
+Other - buttons
