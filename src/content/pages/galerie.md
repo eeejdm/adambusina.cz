@@ -1,9 +1,11 @@
 ---
-title: "Galerie"
-page_heading: "Moje Portfolio"
-intro_text: "Prohlédněte si výběr z mé dosavadní práce."
-disclaimer_text: ""
-seo_description: ""
----
+title: Galerie | Adam Bušina | Fotograf
+page_heading: Galerie
+intro_text: >-
+  Vítejte v mojí galerie. Najdete zde výběr fotek z jednotlivých akcí. Jinak
+  řečeno, nemusí zde být všechny fotky, které ode mě klient dostává.
 
-Úvodní text pro hlavní stránku galerie. 
+
+  Galerii se všemi fotkami najdete [zde](https://eu.zonerama.com/adambusina/1343933).
+disclaimer_text: Fotografie klientů, kteří si nepřejí fotografie zveřejnit, nesdílím.
+---
