@@ -1,7 +1,7 @@
 ---
 title: My First Gallery
 date: 2024-05-25
-cover: /assets/images/uploads/placeholder.jpg
+cover_image: /assets/images/uploads/placeholder.jpg
 description: A collection of beautiful moments. Halo halo?
 images:
   - image: /assets/images/uploads/placeholder.jpg

@@ -1,0 +1,117 @@
+{
+  "$ref": "#/definitions/settings",
+  "definitions": {
+    "settings": {
+      "type": "object",
+      "properties": {
+        "site_title_part1": {
+          "type": "string"
+        },
+        "site_title_part2": {
+          "type": "string"
+        },
+        "logo_image": {
+          "type": "string"
+        },
+        "homepage_hero_heading": {
+          "type": "string"
+        },
+        "homepage_hero_subheading": {
+          "type": "string"
+        },
+        "homepage_hero_cta_label": {
+          "type": "string"
+        },
+        "homepage_hero_cta_link": {
+          "type": "string"
+        },
+        "homepage_signature_image": {
+          "type": "string"
+        },
+        "header_cta_label": {
+          "type": "string"
+        },
+        "header_cta_link": {
+          "type": "string"
+        },
+        "header_navigation_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "footer_intro_text": {
+          "type": "string"
+        },
+        "footer_navigation_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "copyright_text_base": {
+          "type": "string"
+        },
+        "contact_email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "instagram_username": {
+          "type": "string"
+        },
+        "seo_description": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "site_title_part1",
+        "site_title_part2",
+        "logo_image",
+        "homepage_hero_heading",
+        "homepage_hero_subheading",
+        "homepage_hero_cta_label",
+        "homepage_hero_cta_link",
+        "header_cta_label",
+        "header_cta_link",
+        "header_navigation_links",
+        "footer_intro_text",
+        "copyright_text_base",
+        "contact_email"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,12 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import GalleryLayout from '../../layouts/GalleryLayout.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
 
 export async function getStaticPaths() {
-  const galleries = await getCollection('galleries');
-  return galleries.map(entry => ({
-    params: { slug: entry.slug },
-    props: { gallery: entry },
+  const galleryEntries = await getCollection('galleries');
+  return galleryEntries.map(gallery => ({
+    params: { slug: gallery.slug }, props: { gallery },
   }));
 }
 
