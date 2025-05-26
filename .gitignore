@@ -1,0 +1,28 @@
+# Node.js & npm
+node_modules/
+dist/
+.astro/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Astro
+.netlify/
+public/uploads/ # If media is handled elsewhere or you want to prevent accidental commits
+
+# Decap CMS (formerly Netlify CMS)
+# No specific files to ignore by default unless using beta features or local backend files
+# For editorial workflow, Decap CMS creates branches like cms/my-post
+# These are usually handled by the Git hosting platform, not ignored locally.
+
+# Operating System generated files
+.DS_Store
+._*
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+!.env.example 
