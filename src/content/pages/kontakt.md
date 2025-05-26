@@ -1,11 +1,16 @@
 ---
-title: "Kontakt"
-billing_details_heading: "Fakturační údaje"
-billing_details_content: ""
-form_heading: "Napište mi"
-form_intro_text: ""
+title: Kontakt | Adam Bušina | Fotograf
+billing_details_heading: Fakturační údaje
+billing_details_content: |-
+  **Adam Bušina**
+  **Vychodilova 3157/12d 61600, Brno**
+
+  **IČ: 21941611**
+  **Fyzická osoba zapsaná v Živnostenském rejstříku v Brně od 14.8.2024**
+form_heading: Pošlete mi zprávu
+form_intro_text: Pokud máte jakékoliv dotazy, nebo chcete pouze cenovou nabídku,
+  neváhejte a napište mi.
 map_embed_code: ""
-body: "Obsah pro stránku Kontakt."
 seo_description: ""
 ---
 
