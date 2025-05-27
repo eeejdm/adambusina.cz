@@ -1,8 +1,66 @@
 {
+  "about_section_paragraph": "<p>Ahoj, dobrý den, jmenuji se Adam. Moje vášeň pro focení začala už v roce 2019. Bavila mě myšlenka zachycení přírody, města a lidí v jejich jedinečných chvílých. Od prvních experimentů s telefonem přes zrcadlovku až po profesionální projekty jsem se neustále zdokonaloval. Zkušenosti jsem sbíral jako kameraman pro YouTube tvůrce i fotograf e-sport týmů, což mě naučilo rychle reagovat a vystihnout správný moment. Dnes se specializuji na akce plné energie – hudební koncerty a festivaly, ale i společenské události jako jsou maturitní plesy nebo svatby. Jednoduše, fotím všechny momenty, které stojí za uchování. Každá fotografie je pro mě jedinečným příběhem, který si sebou ponesete celý život.</p>",
+  "features_section_cta_link": "/sluzby",
+  "features_section_heading": "Co všechno fotím",
+  "features_section_cta_label": "Podrobné informace a ceník",
+  "about_section_preheading": "Kdo jsem?",
+  "icon_features_section_heading": "Proč si vybrat zrovna mě",
   "homepage_hero_heading": "Zaznamenám & doručím",
+  "features_section_intro": "<p>Zkušený fotograf dokáže vyfotit cokoliv, co mu přijde do cesty. Nicméně, kde vyniká nejvíce, jsou oblasti, které ho baví a umí je fotit na profesionální úrovni. Tady najdete, jaké oblasti a akce baví fotit mě a kterým se nejvíce věnuji.</p>",
   "homepage_hero_cta_label": "Objednejte si mě",
+  "icon_feature_items": [
+    {
+      "heading": "Zachycení přirozených emocí a atmosféry",
+      "text": "<p>Každá fotografie by měla přenést zpět do okamžiku, kdy byla pořízena, a oživit to, co se tehdy dělo. Soustředím se na autentické chvíle, které vyprávějí příběh a nechávají vyniknout pravou podstatu okamžiku.</p>",
+      "image_alt": "Srdce, zachycení přirozených emocí a atmosféry"
+    },
+    {
+      "heading": "Profesionalita a spolehlivost",
+      "text": "<p>Jako profesionál kladu důraz na spolehlivost a precizní přístup. Dodržuji termíny, komunikuji otevřeně a dbám na to, aby každý krok naší spolupráce probíhal hladce. Vždy se přizpůsobím stylu dané akce, abych byl/nebyl vidět tak, jak je potřeba. Vaše spokojenost je pro mě prioritou.</p>",
+      "image_alt": "Hvězda, profesionalita a spolehlivost"
+    },
+    {
+      "heading": "Dostupnost",
+      "text": "<p>Fotografie odevzdávám online pro jednoduchost stažení. Ať už potřebujete snímky optimalizované pro web, sociální sítě nebo vysoce kvalitní verze pro tisk, vždy dostanete fotografie přizpůsobené účelu, pro který je potřebujete.</p>",
+      "image_alt": "Zeměkoule, dostupnost"
+    }
+  ],
+  "about_section_cta_link": "/omne",
+  "about_section_heading": "Poznejte fotografa za kamerou",
+  "icon_features_section_intro": "<p>Vybírání toho správného fotografa na Vaší akci není jednoduché. V následujících bodech najdete moje přednosti a zásady, které Vám doufám usnadní výběr.</p>",
   "homepage_hero_subheading": "Jako reportážní fotograf se postarám o to, aby vaše akce byla profesionálně zaznamenána, a vy jste se nemuseli o nic starat.",
   "gallery_cta_link": "/galerie",
+  "feature_items": [
+    {
+      "heading": "Reportáž",
+      "text": "<p>Plánuješ svatbu, oslavu, firemní večírek nebo jinou speciální událost? Jsem tady, abych zachytil každý důležitý okamžik. Od příprav až po poslední detaily – moje fotografie ti umožní znovu prožít celý průběh akce. S mým přístupem se můžeš spolehnout na to, že každý moment bude zaznamenán přirozeně a autenticky, přesně tak, jak se odehrál.</p>",
+      "image_alt": "Reportáž"
+    },
+    {
+      "heading": "Koncerty a vystoupení",
+      "text": "<p>Hudba naživo je neopakovatelný zážitek a právě tyto okamžiky jsou mým cílem zachytit. Fotím tak, aby na každé fotce byla cítit energie z koncertu – od intenzivních světelných show až po autentické emoce na pódiu i v publiku. S mými fotkami si z koncertu odneseš nejen vzpomínky, ale i obraz, který bude mluvit sám za sebe.</p>",
+      "image_alt": "Koncerty a vystoupení"
+    },
+    {
+      "heading": "Brand fotky",
+      "text": "<p>Potřebuješ profesionální snímky, které budou odrážet identitu tvé značky? Specializuji se na vytváření vizuálního obsahu, který dokonale reprezentuje tvůj brand. Ať už jde o firemní portréty, produktové fotografie nebo lifestyle snímky, pomůžu ti vytvořit silný vizuální dojem, který zaujme tvé zákazníky a posílí tvůj marketing.</p>",
+      "image_alt": "Brand fotky"
+    }
+  ],
+  "about_section_icon_features": [
+    {
+      "icon_type": "camera",
+      "heading": "Profesionální vybavení"
+    },
+    {
+      "icon_type": "person",
+      "heading": "5+ let praxe"
+    },
+    {
+      "icon_type": "clock",
+      "heading": "Rychlé dodání"
+    }
+  ],
   "carousel_images": [
     {
       "src": "/galleries/main_gallery/image1.jpg",
@@ -39,70 +97,8 @@
   ],
   "title": "Domů",
   "gallery_cta_label": "Zobrazit celou galerii",
-  "homepage_hero_cta_link": "/kontakt",
-  
-  "features_section_heading": "Placeholder Features Heading",
-  "features_section_intro": "<p>This is a placeholder intro paragraph for the features section. Update this in the CMS.</p>",
-  "features_section_cta_label": "Learn More",
-  "features_section_cta_link": "/placeholder-link",
-  "feature_items": [
-    {
-      "heading": "Feature One Heading",
-      "text": "<p>Details about feature one. Image will be aimage5.jpg.</p>",
-      "image_alt": "Alt text for aimage5"
-    },
-    {
-      "heading": "Feature Two Heading",
-      "text": "<p>Details about feature two. Image will be aimage1.jpg.</p>",
-      "image_alt": "Alt text for aimage1"
-    },
-    {
-      "heading": "Feature Three Heading",
-      "text": "<p>Details about feature three. Image will be aimage7.jpg.</p>",
-      "image_alt": "Alt text for aimage7"
-    }
-  ],
-  
-  "about_section_preheading": "Kdo jsem?",
-  "about_section_heading": "Poznejte fotografa za kamerou",
-  "about_section_paragraph": "<p>Jsem Adam, vášnivý fotograf z Brna s okem pro detail a láskou k zachycování autentických momentů. Moje cesta k fotografii byla...</p><p>Více se o mně dozvíte na stránce O mně.</p>",
   "about_section_cta_label": "Více o mně",
-  "about_section_cta_link": "/omne",
   "about_section_image_alt": "Portrét Adama Bušiny, fotografa",
-  "about_section_icon_features": [
-    {
-      "icon_type": "camera",
-      "heading": "Moderní Technika"
-    },
-    {
-      "icon_type": "person",
-      "heading": "Osobní Přístup"
-    },
-    {
-      "icon_type": "clock",
-      "heading": "Rychlé Dodání"
-    }
-  ],
-
-  "icon_features_section_heading": "Další Klíčové Vlastnosti",
-  "icon_features_section_intro": "<p>Popisek pro sekci s ikonami a textem, pokud je potřeba.</p>",
-  "icon_feature_items": [
-    {
-      "heading": "Vlastnost s ikonou 1 (icon3-1.png)",
-      "text": "<p>Podrobný popis první vlastnosti s ikonou. Lorem ipsum dolor sit amet.</p>",
-      "image_alt": "Ikona Popis 1"
-    },
-    {
-      "heading": "Vlastnost s ikonou 2 (icon2-1.png)",
-      "text": "<p>Podrobný popis druhé vlastnosti s ikonou. Consectetur adipiscing elit.</p>",
-      "image_alt": "Ikona Popis 2"
-    },
-    {
-      "heading": "Vlastnost s ikonou 3 (icon1-1.png)",
-      "text": "<p>Podrobný popis třetí vlastnosti s ikonou. Sed do eiusmod tempor incididunt.</p>",
-      "image_alt": "Ikona Popis 3"
-    }
-  ],
-  
-  "seo_description": ""
+  "seo_description": "",
+  "homepage_hero_cta_link": "/kontakt"
 }
