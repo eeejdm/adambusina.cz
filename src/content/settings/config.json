@@ -22,10 +22,9 @@
       "url": "/kontakt"
     }
   ],
-  "homepage_signature_image": "/uploads/media/podpis-1.png",
   "instagram_username": "adamsroams",
   "footer_intro_text": "## Tady to nemusí končit\n\nDěkuji za návštevu mojí stránky. Pokud máte jakýkoliv dotaz, neváhejte a napište mi. Budu se těšit na vzájemnou spolupráci!",
-  "logo_image": "/uploads/media/cropped-favicon-06-300x300.png",
+  "logo_image": "/favicons/cropped-favicon-06-300x300.png",
   "copyright_text_base": "Copyright © 2025 Adam Bušina | Fotograf",
   "homepage_hero_heading": "Zaznamenám & doručím",
   "homepage_hero_cta_label": "Objednejte si mě",

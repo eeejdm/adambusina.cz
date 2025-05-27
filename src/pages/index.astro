@@ -4,6 +4,7 @@ import settings from '../content/settings/config.json'; // Site-wide settings
 import homepageContent from '../content/pages/home.json'; // Homepage specific content
 import { Image } from 'astro:assets'; // For optimized images from CMS that are in /src
 import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the carousel
+import signatureImage from '../assets/frequent_images/signature.png'; // Import the signature
 // If homepage_signature_image is a path in /public, use standard <img> instead.
 
 // For sections like "Why Me", "Testimonials" etc., you would fetch those collections here
@@ -26,12 +27,10 @@ import PhotoCarousel from '../components/PhotoCarousel.astro'; // Import the car
           </a>
         )}
       </div>
-      {homepageContent.homepage_signature_image && (
-        <div class="hero-signature-column">
-          <img src={homepageContent.homepage_signature_image} alt="Signature" class="hero-signature" />
-          {/* Placeholder for Astro <Image> component: <Image src={undefined_variable_or_import} alt="Signature optimized" class="hero-signature" width={500}/> */}
-        </div>
-      )}
+      {/* Use the imported signatureImage with Astro's Image component */}
+      <div class="hero-signature-column">
+        <Image src={signatureImage} alt="Signature" class="hero-signature" width={500} />
+      </div>
     </section>
   </div> {/* End of .container for hero section */}
 

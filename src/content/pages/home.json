@@ -1,40 +1,39 @@
 {
-  "homepage_signature_image": "/uploads/media/podpis-1.png",
   "homepage_hero_heading": "Zaznamenám & doručím",
   "homepage_hero_cta_label": "Objednejte si mě",
   "homepage_hero_subheading": "Jako reportážní fotograf se postarám o to, aby vaše akce byla profesionálně zaznamenána, a vy jste se nemuseli o nic starat.",
   "gallery_cta_link": "/galerie",
   "carousel_images": [
     {
-      "src": "/uploads/media/image1.jpg",
+      "src": "/galleries/main_gallery/image1.jpg",
       "alt": "Carousel image 1"
     },
     {
-      "src": "/uploads/media/image2-scaled.jpg",
+      "src": "/galleries/main_gallery/image2-scaled.jpg",
       "alt": "Carousel image 2"
     },
     {
-      "src": "/uploads/media/image3.jpg",
+      "src": "/galleries/main_gallery/image3.jpg",
       "alt": "Carousel image 3"
     },
     {
-      "src": "/uploads/media/image4-scaled.jpg",
+      "src": "/galleries/main_gallery/image4-scaled.jpg",
       "alt": "Carousel image 4"
     },
     {
-      "src": "/uploads/media/image5.jpg",
+      "src": "/galleries/main_gallery/image5.jpg",
       "alt": "Carousel image 5"
     },
     {
-      "src": "/uploads/media/image6-scaled.jpg",
+      "src": "/galleries/main_gallery/image6-scaled.jpg",
       "alt": "Carousel image 6"
     },
     {
-      "src": "/uploads/media/image7.jpg",
+      "src": "/galleries/main_gallery/image7.jpg",
       "alt": "Carousel image 7"
     },
     {
-      "src": "/uploads/media/image8.jpg",
+      "src": "/galleries/main_gallery/image8.jpg",
       "alt": "Carousel image 8"
     }
   ],
