@@ -39,6 +39,70 @@
   ],
   "title": "Domů",
   "gallery_cta_label": "Zobrazit celou galerii",
-  "seo_description": "",
-  "homepage_hero_cta_link": "/kontakt"
+  "homepage_hero_cta_link": "/kontakt",
+  
+  "features_section_heading": "Placeholder Features Heading",
+  "features_section_intro": "<p>This is a placeholder intro paragraph for the features section. Update this in the CMS.</p>",
+  "features_section_cta_label": "Learn More",
+  "features_section_cta_link": "/placeholder-link",
+  "feature_items": [
+    {
+      "heading": "Feature One Heading",
+      "text": "<p>Details about feature one. Image will be aimage5.jpg.</p>",
+      "image_alt": "Alt text for aimage5"
+    },
+    {
+      "heading": "Feature Two Heading",
+      "text": "<p>Details about feature two. Image will be aimage1.jpg.</p>",
+      "image_alt": "Alt text for aimage1"
+    },
+    {
+      "heading": "Feature Three Heading",
+      "text": "<p>Details about feature three. Image will be aimage7.jpg.</p>",
+      "image_alt": "Alt text for aimage7"
+    }
+  ],
+  
+  "about_section_preheading": "Kdo jsem?",
+  "about_section_heading": "Poznejte fotografa za kamerou",
+  "about_section_paragraph": "<p>Jsem Adam, vášnivý fotograf z Brna s okem pro detail a láskou k zachycování autentických momentů. Moje cesta k fotografii byla...</p><p>Více se o mně dozvíte na stránce O mně.</p>",
+  "about_section_cta_label": "Více o mně",
+  "about_section_cta_link": "/omne",
+  "about_section_image_alt": "Portrét Adama Bušiny, fotografa",
+  "about_section_icon_features": [
+    {
+      "icon_type": "camera",
+      "heading": "Moderní Technika"
+    },
+    {
+      "icon_type": "person",
+      "heading": "Osobní Přístup"
+    },
+    {
+      "icon_type": "clock",
+      "heading": "Rychlé Dodání"
+    }
+  ],
+
+  "icon_features_section_heading": "Další Klíčové Vlastnosti",
+  "icon_features_section_intro": "<p>Popisek pro sekci s ikonami a textem, pokud je potřeba.</p>",
+  "icon_feature_items": [
+    {
+      "heading": "Vlastnost s ikonou 1 (icon3-1.png)",
+      "text": "<p>Podrobný popis první vlastnosti s ikonou. Lorem ipsum dolor sit amet.</p>",
+      "image_alt": "Ikona Popis 1"
+    },
+    {
+      "heading": "Vlastnost s ikonou 2 (icon2-1.png)",
+      "text": "<p>Podrobný popis druhé vlastnosti s ikonou. Consectetur adipiscing elit.</p>",
+      "image_alt": "Ikona Popis 2"
+    },
+    {
+      "heading": "Vlastnost s ikonou 3 (icon1-1.png)",
+      "text": "<p>Podrobný popis třetí vlastnosti s ikonou. Sed do eiusmod tempor incididunt.</p>",
+      "image_alt": "Ikona Popis 3"
+    }
+  ],
+  
+  "seo_description": ""
 }

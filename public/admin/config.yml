@@ -113,8 +113,93 @@ collections:
               - { label: "Alt Text", name: "alt", widget: "string", default: "Carousel image" }
           - { label: "Gallery CTA Label (below carousel)", name: "gallery_cta_label", widget: "string", default: "Zobrazit celou galerii" }
           - { label: "Gallery CTA Link (below carousel)", name: "gallery_cta_link", widget: "string", default: "/galerie" }
+          
+          # New Features Section
+          - label: "Features Section Heading"
+            name: "features_section_heading"
+            widget: "string"
+            required: false
+          - label: "Features Section Intro"
+            name: "features_section_intro"
+            widget: "markdown"
+            required: false
+          - label: "Features Section CTA Label"
+            name: "features_section_cta_label"
+            widget: "string"
+            required: false
+          - label: "Features Section CTA Link"
+            name: "features_section_cta_link"
+            widget: "string"
+            required: false
+          - label: "Feature Items (3 items expected)"
+            name: "feature_items"
+            widget: "list"
+            summary: "{{fields.heading}}"
+            min: 3 # Ensuring 3 items
+            max: 3 # Ensuring 3 items
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Text", name: "text", widget: "markdown" }
+              - { label: "Image Alt Text (Image 1: aimage5, Image 2: aimage1, Image 3: aimage7)", name: "image_alt", widget: "string" }
+
+          # New About Me Section
+          - label: "About Section - Pre-heading"
+            name: "about_section_preheading"
+            widget: "string"
+            required: false
+          - label: "About Section - Heading"
+            name: "about_section_heading"
+            widget: "string"
+            required: false # Assuming it can be optional if the whole section can be
+          - label: "About Section - Paragraph"
+            name: "about_section_paragraph"
+            widget: "markdown"
+            required: false
+          - label: "About Section - CTA Label"
+            name: "about_section_cta_label"
+            widget: "string"
+            required: false
+          - label: "About Section - CTA Link"
+            name: "about_section_cta_link"
+            widget: "string"
+            required: false
+          - label: "About Section - Image Alt Text (for profil1.jpg)"
+            name: "about_section_image_alt"
+            widget: "string"
+            required: false
+            default: "Portrait photo"
+
+          - label: "About Section - Icon Features"
+            name: "about_section_icon_features"
+            widget: "list"
+            required: false
+            summary: "{{fields.heading}} - Icon: {{fields.icon_type}}"
+            fields:
+              - { label: "Icon Type", name: "icon_type", widget: "select", options: ["camera", "person", "clock"], default: "camera" }
+              - { label: "Heading", name: "heading", widget: "string" }
+
           - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false, hint: "Optional. If empty, uses Global SEO Description." }
           # ... other homepage specific sections like "Why Me", "About Snippet" can be added as fields here ...
+
+          # New Alternating Icon/Text Features Section
+          - label: "Icon Features Section Heading"
+            name: "icon_features_section_heading"
+            widget: "string"
+            required: false
+          - label: "Icon Features Section Intro"
+            name: "icon_features_section_intro"
+            widget: "markdown"
+            required: false
+          - label: "Icon Feature Items (3 items expected - icon3-1, icon2-1, icon1-1)"
+            name: "icon_feature_items"
+            widget: "list"
+            summary: "{{fields.heading}}"
+            min: 3
+            max: 3
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Text", name: "text", widget: "markdown" }
+              - { label: "Icon Alt Text", name: "image_alt", widget: "string" }
 
       - label: "About Page"
         name: "about"
