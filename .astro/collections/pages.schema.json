@@ -7,6 +7,39 @@
         "title": {
           "type": "string"
         },
+        "page_heading": {
+          "type": "string"
+        },
+        "intro_text": {
+          "type": "string"
+        },
+        "disclaimer_text": {
+          "type": "string"
+        },
+        "hero_heading": {
+          "type": "string"
+        },
+        "hero_background_image": {
+          "type": "string"
+        },
+        "after_text": {
+          "type": "string"
+        },
+        "gallery_cta_label": {
+          "type": "string"
+        },
+        "gallery_cta_link": {
+          "type": "string"
+        },
+        "contact_cta_label": {
+          "type": "string"
+        },
+        "contact_cta_link": {
+          "type": "string"
+        },
+        "seo_description": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }

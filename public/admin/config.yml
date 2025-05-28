@@ -220,14 +220,23 @@ collections:
             widget: "string"
             required: false
 
+      - label: "Galerie Page" # New entry for Galerie page
+        name: "galerie"
+        file: "src/content/pages/galerie.md"
+        fields:
+          - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Galerie" }
+          - { label: "Introductory Paragraph", name: "intro_paragraph", widget: "markdown", required: false }
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false }
+
       - label: "About Page"
         name: "about"
         file: "src/content/pages/omne.md" # Will render at /omne
         fields:
           - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "O mně" }
           - { label: "Hero Heading", name: "hero_heading", widget: "string", required: false }
-          - { label: "Hero Background Image", name: "hero_background_image", widget: "image", required: false }
-          - { label: "Main Content", name: "body", widget: "markdown" }
+          - { label: "Hero Background Image", name: "hero_background_image", widget: "image", required: false, hint: "Image used for the hero section background. Should be omne-hero.jpg" }
+          - { label: "Main Content (for styled rectangle)", name: "body", widget: "markdown" }
+          - { label: "Text After Styled Rectangle (bold text)", name: "after_text", widget: "string", required: false }
           - { label: "Gallery CTA Label", name: "gallery_cta_label", widget: "string", required: false, default: "Moje práce" }
           - { label: "Gallery CTA Link", name: "gallery_cta_link", widget: "string", required: false, default: "/galerie" }
           - { label: "Contact CTA Label", name: "contact_cta_label", widget: "string", required: false, default: "Napište mi" }
@@ -271,4 +280,6 @@ collections:
           - { label: "Page Heading", name: "page_heading", widget: "string", required: false, default: "Moje Portfolio" }
           - { label: "Intro Text", name: "intro_text", widget: "markdown", required: false }
           - { label: "Disclaimer Text", name: "disclaimer_text", widget: "markdown", required: false }
-          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false } 
+          - { label: "Page SEO Description", name: "seo_description", widget: "text", required: false }
+
+          # ... existing code ... 

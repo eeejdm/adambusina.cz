@@ -27,8 +27,19 @@ const pagesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    // Add other fields for static pages here
-    // e.g., description: z.string().optional(),
+    page_heading: z.string().optional(),
+    intro_text: z.string().optional(),
+    disclaimer_text: z.string().optional(),
+    
+    // Fields for O Mně page (and potentially other pages)
+    hero_heading: z.string().optional(),
+    hero_background_image: z.string().optional(),
+    after_text: z.string().optional(),
+    gallery_cta_label: z.string().optional(),
+    gallery_cta_link: z.string().optional(),
+    contact_cta_label: z.string().optional(),
+    contact_cta_link: z.string().optional(),
+    seo_description: z.string().optional(),
   }),
 });
 

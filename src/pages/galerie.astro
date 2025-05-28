@@ -4,7 +4,8 @@ import { getCollection, getEntry } from 'astro:content';
 // Removed: import { Image } from 'astro:assets'; // Not using Astro Image for cover here to avoid dimension issues with public/ images
 
 // Fetch content for the gallery overview page (heading, intro, etc.)
-const galleryOverviewPage = await getEntry('pages', 'galerie'); // Assuming 'galerie.md' is the slug in 'pages' collection
+const galleryOverviewPage = await getEntry('pages', 'galerie');
+// Removed: const { Content: GalleryOverviewContent } = await galleryOverviewPage.render();
 
 // Fetch all gallery entries
 const allGalleries = await getCollection('galleries');
@@ -25,8 +26,11 @@ function formatDate(dateString) {
       {galleryOverviewPage?.data.page_heading && (
         <h1 class="page-main-heading">{galleryOverviewPage.data.page_heading}</h1>
       )}
-      {galleryOverviewPage?.data.intro_text && (
-        <div class="page-intro-text" set:html={galleryOverviewPage.data.intro_text} />
+      {(galleryOverviewPage?.data.intro_text || galleryOverviewPage?.data.disclaimer_text) && (
+        <div class="page-intro-text">
+          {galleryOverviewPage?.data.intro_text && <div class="intro-content" set:html={galleryOverviewPage.data.intro_text} />}
+          {galleryOverviewPage?.data.disclaimer_text && <div class="disclaimer-content" set:html={galleryOverviewPage.data.disclaimer_text} />}
+        </div>
       )}
 
       {sortedGalleries.length > 0 ? (
@@ -63,10 +67,6 @@ function formatDate(dateString) {
       ) : (
         <p>Momentálně zde nejsou žádné galerie.</p>
       )}
-
-      {galleryOverviewPage?.data.disclaimer_text && (
-        <div class="page-disclaimer-text" set:html={galleryOverviewPage.data.disclaimer_text} />
-      )}
     </section>
   </div>
 </BaseLayout>
@@ -77,21 +77,53 @@ function formatDate(dateString) {
   }
 
   .page-main-heading {
-    font-size: var(--h1-font-size, 3rem);
-    text-align: center;
-    margin-bottom: 1rem;
+    font-size: clamp(2.1875rem, 5vw, 3rem); /* Responsive: 35px to 48px */
+    text-align: left;
+    margin-bottom: 1.5rem;
     color: var(--color-headings); 
   }
 
   .page-intro-text {
-    font-size: 1.1rem;
-    text-align: center;
-    max-width: 70ch;
-    margin: 0 auto 3rem auto;
-    color: var(--color-text-body);
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 3rem;
+    color: var(--color-dark);
+    background-color: var(--color-secondary-gray);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
+  /* Global styles for content injected via set:html */
   .page-intro-text :global(p) {
     margin-bottom: 1em;
+  }
+  .page-intro-text :global(p:last-child) {
+    margin-bottom: 0; /* This might need adjustment if intro and disclaimer are separate p elements */
+  }
+  .page-intro-text :global(a) { 
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+  }
+  .page-intro-text :global(a:hover) {
+    color: var(--color-primary-gray);
+  }
+  /* Styles for the disclaimer if it's a separate div/section within page-intro-text */
+  .page-intro-text .disclaimer-content {
+    margin-top: 1.5rem; 
+    font-size: 0.9em;
+    color: var(--color-primary-gray); 
+    border-top: 1px solid var(--color-primary-gray); 
+    padding-top: 1rem;
+  }
+  /* Adjust :global(p:last-child) if disclaimer is the actual last child */
+  .page-intro-text .disclaimer-content:has(:global(p):last-child) :global(p):last-child {
+      margin-bottom: 0;
+  }
+  .page-intro-text .intro-content:has(:global(p):last-child) :global(p):last-child {
+      margin-bottom: 0;
+  }
+  .page-intro-text .intro-content:not(:has(+ .disclaimer-content)) :global(p:last-child) {
+    margin-bottom: 0; /* Only if intro is truly last overall */
   }
 
   .gallery-grid {
