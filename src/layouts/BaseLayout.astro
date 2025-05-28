@@ -256,8 +256,8 @@ const currentYear = new Date().getFullYear();
     {/* GLightbox JS (place before closing </body>) */}
     <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 
-    {/* Cube Gallery JS (for justified layout) */}
-    <script type="module" src="https://cdn.jsdelivr.net/npm/cube-gallery-js@latest/src/index.min.js"></script>
+    {/* Cube Gallery JS (for justified layout) - Now local */}
+    <script src="/js/cube-gallery.min.js"></script>
 	</body>
 </html>
 
@@ -590,7 +590,7 @@ const currentYear = new Date().getFullYear();
 
   .mobile-nav ul {
     list-style: none;
-    padding: 0;
+    padding: 0 var(--container-padding, 1.5rem); /* Add horizontal padding */
     margin: 0;
   }
   .mobile-nav ul li {
