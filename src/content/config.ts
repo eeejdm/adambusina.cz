@@ -4,7 +4,14 @@ const galleriesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.string().transform((str) => new Date(str)),
+    date: z.union([z.string(), z.date()]).transform((val) => {
+      if (typeof val === 'string') {
+        // Attempt to handle timezone explicitly if needed, or rely on JS Date's local timezone interpretation
+        // For UTC dates from CMS (like YYYY-MM-DD), this should be fine.
+        return new Date(val);
+      }
+      return val; // It's already a Date object
+    }),
     description: z.string().optional(),
     cover_image: z.string().optional(),
     images: z.array(
