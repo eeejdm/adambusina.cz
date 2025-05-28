@@ -1,0 +1,202 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, getEntryBySlug, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allGalleries = await getCollection('galleries');
+  return allGalleries.map(galleryEntry => ({
+    params: { slug: galleryEntry.slug },
+    props: { gallery: galleryEntry }, 
+  }));
+}
+
+interface Props {
+  gallery: CollectionEntry<'galleries'>;
+}
+const { gallery } = Astro.props as Props;
+
+const { Content } = await gallery.render();
+
+// Helper function to format date
+function formatDate(dateInput: Date | string): string {
+  if (!dateInput) return '';
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  return date.toLocaleDateString('cs-CZ', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// Helper function for natural sorting of image filenames
+function naturalSortImages(a: { image: string }, b: { image: string }): number {
+  const ia = a.image;
+  const ib = b.image;
+
+  const re = /(\d+)/g; // Regex to find sequences of digits
+
+  const partsA = ia.split(re);
+  const partsB = ib.split(re);
+
+  for (let i = 0; i < Math.min(partsA.length, partsB.length); i++) {
+    const partA = partsA[i];
+    const partB = partsB[i];
+
+    if (i % 2 === 1) { // This part is a number
+      const numA = parseInt(partA, 10);
+      const numB = parseInt(partB, 10);
+      if (numA !== numB) {
+        return numA - numB; // Sort numerically
+      }
+    } else { // This part is a string
+      if (partA !== partB) {
+        return partA.localeCompare(partB); // Sort alphabetically
+      }
+    }
+  }
+  return partsA.length - partsB.length;
+}
+
+const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(naturalSortImages) : [];
+---
+<BaseLayout title={gallery.data.title} description={gallery.data.description || `Fotogalerie: ${gallery.data.title}`}>
+  <div class="container">
+    <section class="gallery-detail-section">
+      <a href="/galerie/" class="back-link">&larr; Zpět na přehled galerií</a>
+      <h1 class="gallery-title">{gallery.data.title}</h1>
+      {gallery.data.date && (
+        <p class="gallery-date">{formatDate(gallery.data.date)}</p>
+      )}
+
+      <div class="gallery-description">
+        <Content />
+      </div>
+
+      <h2 class="photo-grid-heading">Galerie</h2>
+      {sortedImages && sortedImages.length > 0 ? (
+        <div id="photoGridContainer" class="photo-grid">
+          {sortedImages.map(imgEntry => (
+            <a href={imgEntry.image} class="glightbox" data-gallery="gallery-main" data-title={imgEntry.alt}>
+              <img 
+                src={imgEntry.image} 
+                alt={imgEntry.alt || gallery.data.title} 
+                loading="lazy" 
+                data-actual-width=""
+                data-actual-height=""
+              />
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p>Tato galerie zatím neobsahuje žádné fotografie.</p>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .gallery-detail-section {
+    padding: 2rem 0 4rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .gallery-title {
+    font-size: var(--h1-font-size, 2.8rem);
+    margin-bottom: 0.25rem;
+    color: var(--color-headings);
+  }
+
+  .gallery-date {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-description {
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  .gallery-description :global(p) {
+    margin-bottom: 1em;
+  }
+  .gallery-description :global(a) {
+    color: var(--color-primary);
+  }
+   .gallery-description :global(a:hover) {
+    text-decoration: underline;
+  }
+
+
+  .photo-grid-heading {
+    font-size: var(--h2-font-size, 2rem);
+    margin-bottom: 1.5rem;
+    color: var(--color-headings);
+    text-align: left;
+  }
+
+  .photo-grid {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .photo-grid img {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+</style>
+
+<script type="module">
+  import CubeGallery from 'https://cdn.jsdelivr.net/npm/cube-gallery-js@latest/src/index.min.js';
+
+  // GLightbox is expected to be global from BaseLayout.astro
+  // No need for CubeGallery declaration as it's imported.
+
+  function initializeGalleries() {
+    // GLightbox
+    if (typeof window.GLightbox !== 'undefined') { // Access via window object
+      const lightbox = window.GLightbox({
+        selector: '.glightbox', 
+        touchNavigation: true,
+        loop: true,
+        title: false,
+        description: false,
+      });
+    } else {
+      console.warn('GLightbox not available.');
+    }
+
+    // Cube Gallery
+    if (typeof CubeGallery !== 'undefined') {
+      const gridContainerElement = document.getElementById('photoGridContainer'); // Get the element
+      // Check if the element exists and has children before initializing
+      if (gridContainerElement && gridContainerElement.children.length > 0) { 
+        try {
+          // Pass the BARE ID string to CubeGallery
+          new CubeGallery('photoGridContainer', { 
+            minHeight: 200, 
+            margin: 5       
+          });
+        } catch (e) {
+          console.error("Error initializing CubeGallery:", e);
+        }
+      } else if (gridContainerElement) {
+        // console.log("CubeGallery: No images in #photoGridContainer to initialize.");
+      } else {
+        console.warn('CubeGallery: Container #photoGridContainer not found.');
+      }
+    } else {
+      console.warn('CubeGallery library could not be imported or is not defined.');
+    }
+  }
+
+  document.addEventListener('astro:page-load', initializeGalleries);
+</script> 

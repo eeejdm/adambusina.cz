@@ -201,6 +201,26 @@ collections:
               - { label: "Text", name: "text", widget: "markdown" }
               - { label: "Icon Alt Text", name: "image_alt", widget: "string" }
 
+          # New Testimonials Section fields
+          - label: "Testimonials Section Heading"
+            name: "testimonials_section_heading"
+            widget: "string"
+            required: false # Assuming can be optional
+          - label: "Testimonials Section CTA Label"
+            name: "testimonials_section_cta_label"
+            widget: "string"
+            required: false
+          - label: "Testimonials Section CTA Link"
+            name: "testimonials_section_cta_link"
+            widget: "string"
+            required: false
+
+          # Contact Form Section
+          - label: "Contact Form Section Heading"
+            name: "contact_section_heading"
+            widget: "string"
+            required: false
+
       - label: "About Page"
         name: "about"
         file: "src/content/pages/omne.md" # Will render at /omne

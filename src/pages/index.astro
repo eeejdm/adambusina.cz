@@ -22,6 +22,9 @@ import iconFeatureImage2 from '../assets/frequent_images/icon2-1.png'; // Corres
 import iconFeatureImage3 from '../assets/frequent_images/icon1-1.png'; // Corresponds to third item
 const iconFeatureImages = [iconFeatureImage1, iconFeatureImage2, iconFeatureImage3];
 
+import { getCollection } from 'astro:content';
+const homepageTestimonials = await getCollection('testimonials', ({ data }) => data.display_on_homepage === true);
+
 // For sections like "Why Me", "Testimonials" etc., you would fetch those collections here
 // import { getCollection } from 'astro:content';
 // const testimonials = await getCollection('testimonials', ({ data }) => data.display_on_homepage === true);
@@ -162,13 +165,77 @@ const iconFeatureImages = [iconFeatureImage1, iconFeatureImage2, iconFeatureImag
     </section>
   )}
 
-  <div class="container"> {/* Re-open .container for subsequent sections if needed */}
-    <section style="padding: 4rem 0; text-align: center;">
-        <h2>Další sekce přijdou sem...</h2>
-        <p>Tato stránka bude sestavena z různých komponent a obsahu definovaného v CMS.</p>
-        <p><a href="/galerie" class="cta-button">Prohlédnout Galerie</a></p>
+  {/* Testimonials Section */}
+  {homepageTestimonials && homepageTestimonials.length > 0 && (
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="testimonials-grid">
+          <div class="testimonials-left-col">
+            {homepageContent.testimonials_section_heading && (
+              <h2>{homepageContent.testimonials_section_heading}</h2>
+            )}
+            {homepageContent.testimonials_section_cta_label && homepageContent.testimonials_section_cta_link && (
+              <a href={homepageContent.testimonials_section_cta_link} class="cta-button testimonials-cta">
+                {homepageContent.testimonials_section_cta_label}
+              </a>
+            )}
+            {homepageTestimonials[0] && (
+              <div class="testimonial-item">
+                <blockquote set:html={homepageTestimonials[0].data.quote.replace(/\n/g, '<br>')} />
+                <cite>
+                  {homepageTestimonials[0].data.author_name}
+                  {homepageTestimonials[0].data.author_context && <span>, {homepageTestimonials[0].data.author_context}</span>}
+                </cite>
+              </div>
+            )}
+          </div>
+          <div class="testimonials-right-col">
+            {homepageTestimonials.slice(1, 3).map(testimonial => (
+              <div class="testimonial-item">
+                <blockquote set:html={testimonial.data.quote.replace(/\n/g, '<br>')} />
+                <cite>
+                  {testimonial.data.author_name}
+                  {testimonial.data.author_context && <span>, {testimonial.data.author_context}</span>}
+                </cite>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
-  </div>
+  )}
+
+  {/* Contact Form Section */}
+  {homepageContent.contact_section_heading && (
+    <section class="contact-form-section">
+      <div class="container">
+        <h2 class="section-heading">{homepageContent.contact_section_heading}</h2>
+        <form class="contact-form" name="homepage-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="homepage-contact" />
+          <p class="hidden">
+            <label>
+              Don't fill this out if you're human: <input name="bot-field" />
+            </label>
+          </p>
+          <div class="form-group">
+            <label for="name">Jméno</label>
+            <input type="text" name="name" id="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Zpráva</label>
+            <textarea name="message" id="message" rows="5" required></textarea>
+          </div>
+          <div class="form-group form-submit-group">
+            <button type="submit" class="cta-button contact-form-submit">Odeslat</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
@@ -560,6 +627,167 @@ const iconFeatureImages = [iconFeatureImage1, iconFeatureImage2, iconFeatureImag
     color: var(--color-text-body); /* Standard body text color */
   }
 
+  /* Testimonials Section Styles */
+  .testimonials-section {
+    background-color: var(--color-primary-gray); /* Primary color background */
+    color: var(--color-white); /* Text color for contrast */
+    padding: 4rem 0;
+    margin-top: 4rem; /* Space above this section */
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: flex-start; /* Align columns to the top */
+  }
+  .testimonials-left-col h2 {
+    font-size: 2.5rem;
+    color: var(--color-white);
+    margin-bottom: 1.5rem;
+  }
+  .testimonials-cta {
+    display: inline-block;
+    background-color: var(--color-white);
+    color: var(--color-primary-gray);
+    padding: 12px 24px;
+    border-radius: 2em;
+    text-decoration: none;
+    font-family: var(--font-headings);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 2rem; /* Space before the first testimonial in this column */
+  }
+  .testimonials-cta:hover,
+  .testimonials-cta:focus {
+    background-color: var(--color-secondary-gray);
+    color: var(--color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .testimonial-item {
+    background-color: var(--color-dark); /* Darker card for testimonial */
+    padding: 2rem;
+    border-radius: 8px; /* Slightly rounded corners for cards */
+    margin-bottom: 2rem; /* Space between testimonials in the right column */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .testimonial-item:last-child {
+    margin-bottom: 0; /* No bottom margin for the last item in a column */
+  }
+  .testimonial-item blockquote {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-light-gray); /* Lighter text for quote */
+    margin: 0 0 1rem 0;
+    padding: 0;
+    border: none;
+    font-style: italic;
+  }
+  .testimonial-item blockquote :global(br) {
+    display: block; /* Ensure <br> creates a line break */
+    content: "";
+    margin-top: 0.5em;
+  }
+  .testimonial-item cite {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-white);
+    font-style: normal;
+  }
+  .testimonial-item cite span {
+    font-weight: 400;
+    color: var(--color-secondary-gray);
+  }
+
+  /* Contact Form Section Styles */
+  .contact-form-section {
+    padding: 4rem 0;
+  }
+
+  .contact-form-section .section-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .contact-form {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-dark-gray); 
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da; /* Hardcoded light gray for testing visibility */
+    background-color: #ffffff; /* Explicit white background */
+    border-radius: 4px; 
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-group input[type="text"]:focus,
+  .form-group input[type="email"]:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary); 
+    box-shadow: 0 0 0 2px var(--color-primary-light); 
+  }
+
+  .form-group textarea {
+    resize: vertical; 
+  }
+
+  .form-submit-group {
+    align-items: center; 
+  }
+  
+  .contact-form-submit {
+    /* .cta-button class should already provide rounded corners (border-radius: 2em) */
+    /* If it's not applying, ensure .cta-button definition is correct and reachable */
+    /* No specific overrides needed here if .cta-button is working as intended */
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* General .cta-button style (ensure this is present and has border-radius) */
+  /* This is likely defined earlier, but for completeness: */
+  .cta-button {
+    display: inline-block;
+    /* ... other cta styles like background, color, padding ... */
+    border-radius: 2em; /* This is the key for rounded buttons */
+    text-decoration: none;
+    font-family: var(--font-headings);
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative; 
+    /* Default padding & font-size for most CTAs, can be overridden */
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+  /* Ensure specific CTA variations like .hero-cta, .gallery-cta, etc., don't undo border-radius */
+
   @media (max-width: 992px) { 
     .hero-section {
       padding-top: 4rem;
@@ -655,6 +883,17 @@ const iconFeatureImages = [iconFeatureImage1, iconFeatureImage2, iconFeatureImag
     .icon-feature-block-content h3 {
       font-size: 1.3rem;
     }
+
+    /* Testimonials Responsive */
+    .testimonials-grid {
+      grid-template-columns: 1fr; /* Stack columns */
+    }
+    .testimonials-left-col h2 {
+      text-align: center;
+    }
+    .testimonials-left-col {
+      text-align: center; /* Center button */
+    }
   }
 
   @media (max-width: 768px) { 
@@ -730,6 +969,28 @@ const iconFeatureImages = [iconFeatureImage1, iconFeatureImage2, iconFeatureImag
     .icon-feature-image-wrapper {
       width: 100px;
       height: 100px;
+    }
+
+    /* Testimonials Responsive */
+    .testimonials-section {
+      padding: 3rem 0;
+    }
+    .testimonials-left-col h2 {
+      font-size: 2rem;
+    }
+    .testimonial-item blockquote {
+      font-size: 1rem;
+    }
+    .testimonial-item cite {
+      font-size: 0.9rem;
+    }
+
+    /* Contact Form Responsive */
+    .contact-form-section {
+      padding: 3rem 0;
+    }
+    .contact-form-section .section-heading {
+      margin-bottom: 2rem;
     }
   }
 </style> 

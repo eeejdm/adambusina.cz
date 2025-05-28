@@ -65,6 +65,9 @@ const currentYear = new Date().getFullYear();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
+    {/* GLightbox CSS */}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
     <ViewTransitions />
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	</head>
@@ -83,7 +86,7 @@ const currentYear = new Date().getFullYear();
           <nav class="main-nav">
             <ul>
               {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
-                <li><a href={link.url} class={Astro.url.pathname === link.url ? 'is-active' : ''}>{link.label}</a></li>
+                <li><a href={link.url} class={(Astro.url.pathname === link.url || (link.url !== '/' && Astro.url.pathname.startsWith(link.url + '/'))) ? 'is-active' : ''}>{link.label}</a></li>
               ))}
             </ul>
           </nav>
@@ -104,7 +107,7 @@ const currentYear = new Date().getFullYear();
     <div class="mobile-nav" id="mobileNav" aria-hidden="true">
       <ul>
         {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
-          <li><a href={link.url}>{link.label}</a></li>
+          <li><a href={link.url} class={(Astro.url.pathname === link.url || (link.url !== '/' && Astro.url.pathname.startsWith(link.url + '/'))) ? 'is-active' : ''}>{link.label}</a></li>
         ))}
         {settings.header_cta_label && settings.header_cta_link && (
           <li class="mobile-nav-cta"><a href={settings.header_cta_link} class="cta-button">{settings.header_cta_label}</a></li>
@@ -198,6 +201,12 @@ const currentYear = new Date().getFullYear();
       // Run after Astro View Transitions page swap
       document.addEventListener('astro:page-load', setupHamburgerMenu);
     </script>
+
+    {/* GLightbox JS (place before closing </body>) */}
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+    {/* Cube Gallery JS (for justified layout) */}
+    <script type="module" src="https://cdn.jsdelivr.net/npm/cube-gallery-js@latest/src/index.min.js"></script>
 	</body>
 </html>
 
@@ -720,5 +729,58 @@ const currentYear = new Date().getFullYear();
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  /* GLightbox Customizations */
+  .gslide-description,
+  .glightbox-description,
+  .gdesc-inner, /* This is a common one, often wrapping title and desc */
+  .gslide-title, /* Specifically hide title element */
+  .gslide-desc /* Specifically hide description element */ {
+    display: none !important; /* Use !important to ensure override */
+    visibility: hidden !important;
+  }
+
+  /* If there's still a container for the description taking up space, try hiding it too */
+  .gslide-description-container {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* GLightbox: Attempt to constrain overall size and center */
+  .gcontainer, .ginlined-content {
+    /* .gcontainer is the main box, .ginlined-content for inline content */
+    padding: 20px; /* Add some breathing room around the content box */
+    box-sizing: border-box;
+  }
+
+  .gslide-inner-content { /* This is often the element that has the actual width/height from JS */
+    max-width: 90vw !important;  /* Max 90% of viewport width */
+    max-height: 85vh !important; /* Max 85% of viewport height */
+    width: auto !important; 
+    height: auto !important;
+    display: flex; /* Use flex to center the media element if it's smaller */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto; /* Centering the slide content box itself */
+  }
+
+  .gslide-media {
+    /* Resetting any direct width/height that might be set by JS if gslide-inner-content controls size */
+    width: auto !important; 
+    height: auto !important;
+    max-width: 100%; /* Media should not exceed its flex parent (gslide-inner-content) */
+    max-height: 100%;
+  }
+
+  .gslide-media img, .gslide-media video {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto; /* Centering image within gslide-media if it doesn't fill */
   }
 </style> 

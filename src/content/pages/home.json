@@ -99,6 +99,13 @@
   "gallery_cta_label": "Zobrazit celou galerii",
   "about_section_cta_label": "Více o mně",
   "about_section_image_alt": "Portrét Adama Bušiny, fotografa",
-  "seo_description": "",
-  "homepage_hero_cta_link": "/kontakt"
+  "homepage_hero_cta_link": "/kontakt",
+  
+  "testimonials_section_heading": "Co o mně říkají klienti",
+  "testimonials_section_cta_label": "Všechny reference",
+  "testimonials_section_cta_link": "/reference",
+
+  "contact_section_heading": "Napište mi",
+
+  "seo_description": ""
 }
