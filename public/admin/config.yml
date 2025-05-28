@@ -48,7 +48,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Slug (URL part)", name: "slug", widget: "string", required: false, hint: "Optional. If empty, generated from title. E.g., 'my-first-gallery'" }
-      - { label: "Date", name: "date", widget: "date", format: "YYYY-MM-DD", picker_utc: true, required: true }
+      - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: true }
       - { label: "Cover Image", name: "cover_image", widget: "image" }
       - { label: "Description", name: "description", widget: "markdown", required: false }
       - label: "Images"
