@@ -178,9 +178,12 @@ const currentYear = new Date().getFullYear();
             newButton.classList.add('is-active');
             mobileNav.classList.add('is-open');
             mobileNav.setAttribute('aria-hidden', 'false');
+            mobileNav.inert = false; // Make it interactive
             document.body.classList.add('no-scroll');
-            // Add listener for click outside when menu is open
             document.addEventListener('click', handleClickOutside, true);
+            // Optionally, focus the first link or the close button in the menu
+            const firstFocusable = mobileNav.querySelector('a, button.close-mobile-menu');
+            if (firstFocusable) firstFocusable.focus();
           }
 
           function closeMenu() {
@@ -188,9 +191,11 @@ const currentYear = new Date().getFullYear();
             newButton.classList.remove('is-active');
             mobileNav.classList.remove('is-open');
             mobileNav.setAttribute('aria-hidden', 'true');
+            mobileNav.inert = true; // Make it non-interactive
             document.body.classList.remove('no-scroll');
-            // Remove listener for click outside when menu is closed
             document.removeEventListener('click', handleClickOutside, true);
+            // Return focus to the hamburger button
+            newButton.focus(); 
           }
 
           newButton.addEventListener('click', (event) => {
