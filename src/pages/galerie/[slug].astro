@@ -155,8 +155,7 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
 </style>
 
 <script type="module">
-  // CubeGallery is expected to be loaded globally from BaseLayout.astro
-  // GLightbox is also expected to be global from BaseLayout.astro
+  import CubeGallery from 'https://cdn.jsdelivr.net/npm/cube-gallery-js/src/index.min.js';
 
   function initializeGalleries() {
     // GLightbox
@@ -172,51 +171,51 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
       console.warn('GLightbox not available.');
     }
 
-    // Cube Gallery with Polling
-    let attempts = 0;
-    const maxAttempts = 20; // Try for 2 seconds (20 * 100ms)
-    const intervalTime = 100; // 100ms
-
-    function tryInitCubeGallery() {
-      const gridContainerElement = document.getElementById('photoGridContainer');
-      // @ts-ignore 
-      if ((typeof CubeGallery !== 'undefined' || typeof window.CubeGallery !== 'undefined') && gridContainerElement) {
-        const GalleryConstructor = CubeGallery || window.CubeGallery;
-        if (gridContainerElement.children.length > 0) {
-          try {
-            new GalleryConstructor('photoGridContainer', { 
-              minHeight: 200, 
-              margin: 5
-            });
-            // console.log('CubeGallery initialized successfully.'); // Optional: for debugging
-          } catch (e) {
-            console.error("Error initializing CubeGallery:", e);
-          }
-        } else {
-          // console.log("CubeGallery: No images in #photoGridContainer to initialize.");
+    // Cube Gallery Initialization
+    const gridContainerElement = document.getElementById('photoGridContainer');
+    
+    if (CubeGallery && gridContainerElement) {
+      if (gridContainerElement.children.length > 0) {
+        try {
+          new CubeGallery('photoGridContainer', { 
+            minHeight: 200, 
+            margin: 5
+          });
+          // console.log('CubeGallery initialized successfully.');
+        } catch (e) {
+          console.error("Error initializing CubeGallery:", e);
         }
       } else {
-        attempts++;
-        if (attempts < maxAttempts) {
-          setTimeout(tryInitCubeGallery, intervalTime);
-        } else {
-          if (!gridContainerElement) {
-            console.warn('CubeGallery: Container #photoGridContainer not found after multiple attempts.');
-          } else {
-            console.warn('CubeGallery library did not become defined after multiple attempts.');
-          }
-        }
+        // console.log("CubeGallery: No images in #photoGridContainer to initialize.");
+      }
+    } else {
+      if (!gridContainerElement) {
+        console.warn('CubeGallery: Container #photoGridContainer not found.');
+      }
+      if (!CubeGallery) {
+        console.warn('CubeGallery library not available via import.');
       }
     }
-    tryInitCubeGallery(); // Start the first attempt
   }
 
-  document.addEventListener('astro:page-load', initializeGalleries);
-  // Attempt an initial call as well, in case astro:page-load fires too late for initial content
-  // or for non-transition navigations, but ensure it runs after DOM is available.
-  if (document.readyState === 'loading') { 
-    document.addEventListener('DOMContentLoaded', initializeGalleries);
-  } else { 
-    initializeGalleries(); // Or 'interactive' or 'complete'
+  // Run gallery initialization when the DOM is ready and after Astro page loads.
+  function runInit() {
+    // Check if the container exists before initializing
+    if (document.getElementById('photoGridContainer')) {
+        initializeGalleries();
+    } else {
+        // If container not present yet, wait for DOMContentLoaded or astro:page-load
+        // This specific check might be redundant if astro:page-load or DOMContentLoaded always fire correctly
+        // but acts as a safeguard if script runs before container is rendered in some edge cases.
+        // console.warn('Initial check: photoGridContainer not found');
+    }
   }
+
+  if (document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', runInit);
+  } else { 
+    runInit(); // DOM is already loaded
+  }
+  document.addEventListener('astro:page-load', runInit);
+
 </script> 
