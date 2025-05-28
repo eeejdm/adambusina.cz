@@ -250,6 +250,10 @@ const currentYear = new Date().getFullYear();
     min-height: 100vh;
   }
 
+  body.no-scroll {
+    overflow: hidden;
+  }
+
   main {
     flex-grow: 1;
   }
@@ -500,19 +504,28 @@ const currentYear = new Date().getFullYear();
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* Mobile Navigation Menu Styles */
+  /* Mobile Navigation Menu */
   .mobile-nav {
-    display: none; /* Hidden by default, shown by JS adding .is-open */
-    background-color: var(--color-white); /* Changed to light background */
-    z-index: 999; /* Ensure it's above main content but potentially below a sticky header if header was transparent */
-    padding: 1rem var(--container-padding); /* Adjust padding */
-    text-align: left; /* Changed from center for a more standard dropdown feel */
-    border-bottom: 1px solid #eee; /* Similar to header border */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04); /* Similar to header shadow */
+    display: none; /* Hidden by default, JS toggles via .is-open */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-dark); /* Or your desired menu background */
+    z-index: 1000; /* Ensure it's above other content */
+    overflow-y: auto; /* Allow scrolling within the menu if content is long */
+    padding-top: 6rem; /* Example: space for a close button or header */
+    text-align: center;
   }
+
   .mobile-nav.is-open {
-    display: block;
+    display: flex; /* Use flex to center content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center links vertically */
   }
+
   .mobile-nav ul {
     list-style: none;
     padding: 0;
@@ -523,7 +536,7 @@ const currentYear = new Date().getFullYear();
   }
   .mobile-nav ul li a {
     font-family: var(--font-headings);
-    color: var(--color-dark); /* Changed to dark text */
+    color: var(--color-white); /* Changed to light text */
     text-decoration: none;
     font-size: 1rem; /* Adjusted size for dropdown */
     font-weight: 500;
@@ -557,11 +570,6 @@ const currentYear = new Date().getFullYear();
     background-color: var(--color-primary-gray);
     color: var(--color-white);
     border-color: var(--color-primary-gray);
-  }
-
-  /* Prevent body scroll when mobile menu is open - STILL APPLIES if menu can get long */
-  body.no-scroll {
-    overflow: hidden;
   }
 
   /* Footer Styles */

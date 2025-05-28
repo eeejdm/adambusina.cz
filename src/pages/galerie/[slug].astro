@@ -155,16 +155,14 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
 </style>
 
 <script type="module">
-  import CubeGallery from 'https://cdn.jsdelivr.net/npm/cube-gallery-js@latest/src/index.min.js';
-
-  // GLightbox is expected to be global from BaseLayout.astro
-  // No need for CubeGallery declaration as it's imported.
+  // CubeGallery is expected to be loaded globally from BaseLayout.astro
+  // GLightbox is also expected to be global from BaseLayout.astro
 
   function initializeGalleries() {
     // GLightbox
-    if (typeof window.GLightbox !== 'undefined') { // Access via window object
+    if (typeof window.GLightbox !== 'undefined') {
       const lightbox = window.GLightbox({
-        selector: '.glightbox', 
+        selector: '.glightbox',
         touchNavigation: true,
         loop: true,
         title: false,
@@ -175,15 +173,15 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
     }
 
     // Cube Gallery
-    if (typeof CubeGallery !== 'undefined') {
-      const gridContainerElement = document.getElementById('photoGridContainer'); // Get the element
-      // Check if the element exists and has children before initializing
-      if (gridContainerElement && gridContainerElement.children.length > 0) { 
+    // @ts-ignore // Assuming CubeGallery is attached to window or available globally by the CDN script
+    if (typeof CubeGallery !== 'undefined') { 
+      const gridContainerElement = document.getElementById('photoGridContainer');
+      if (gridContainerElement && gridContainerElement.children.length > 0) {
         try {
-          // Pass the BARE ID string to CubeGallery
+          // @ts-ignore
           new CubeGallery('photoGridContainer', { 
             minHeight: 200, 
-            margin: 5       
+            margin: 5
           });
         } catch (e) {
           console.error("Error initializing CubeGallery:", e);
@@ -193,10 +191,35 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
       } else {
         console.warn('CubeGallery: Container #photoGridContainer not found.');
       }
+    // @ts-ignore
+    } else if (typeof window.CubeGallery !== 'undefined') { // Check window object explicitly
+      const gridContainerElement = document.getElementById('photoGridContainer');
+      if (gridContainerElement && gridContainerElement.children.length > 0) {
+        try {
+          // @ts-ignore
+          new window.CubeGallery('photoGridContainer', { 
+            minHeight: 200, 
+            margin: 5
+          });
+        } catch (e) {
+          console.error("Error initializing CubeGallery (via window):", e);
+        }
+      } else if (gridContainerElement) {
+        // console.log("CubeGallery: No images in #photoGridContainer to initialize (via window).");
+      } else {
+        console.warn('CubeGallery: Container #photoGridContainer not found (via window).');
+      }
     } else {
-      console.warn('CubeGallery library could not be imported or is not defined.');
+      console.warn('CubeGallery library is not defined.');
     }
   }
 
   document.addEventListener('astro:page-load', initializeGalleries);
+  // Attempt an initial call as well, in case astro:page-load fires too late for initial content
+  // or for non-transition navigations, but ensure it runs after DOM is available.
+  if (document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', initializeGalleries);
+  } else { 
+    initializeGalleries(); // Or 'interactive' or 'complete'
+  }
 </script> 
