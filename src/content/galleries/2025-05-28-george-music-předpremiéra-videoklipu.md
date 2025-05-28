@@ -1,0 +1,5 @@
+---
+title: George Music, Předpremiéra videoklipu
+date: 2025-03-07
+cover_image: /galleries/main_gallery/dsc00326-enhanced-nr.jpg
+---
