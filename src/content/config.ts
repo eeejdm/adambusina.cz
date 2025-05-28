@@ -4,7 +4,7 @@ const galleriesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.date(),
+    date: z.string().transform((str) => new Date(str)),
     description: z.string().optional(),
     cover_image: z.string().optional(),
     images: z.array(
