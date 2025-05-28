@@ -105,6 +105,7 @@ const currentYear = new Date().getFullYear();
     </header>
 
     <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <button class="close-mobile-menu" aria-label="Zavřít menu">&times;</button>
       <ul>
         {settings.header_navigation_links && settings.header_navigation_links.map((link: NavLink) => (
           <li><a href={link.url} class={(Astro.url.pathname === link.url || (link.url !== '/' && Astro.url.pathname.startsWith(link.url + '/'))) ? 'is-active' : ''}>{link.label}</a></li>
@@ -170,17 +171,67 @@ const currentYear = new Date().getFullYear();
           const newButton = hamburgerButton.cloneNode(true);
           hamburgerButton.parentNode.replaceChild(newButton, hamburgerButton);
 
-          newButton.addEventListener('click', () => {
-            const isOpened = newButton.getAttribute('aria-expanded') === 'true' || false;
-            newButton.setAttribute('aria-expanded', !isOpened);
-            newButton.classList.toggle('is-active');
-            mobileNav.classList.toggle('is-open');
-            mobileNav.setAttribute('aria-hidden', String(isOpened)); // Ensure string value
-            document.body.classList.toggle('no-scroll', !isOpened);
+          const closeButton = mobileNav.querySelector('.close-mobile-menu');
+
+          function openMenu() {
+            newButton.setAttribute('aria-expanded', 'true');
+            newButton.classList.add('is-active');
+            mobileNav.classList.add('is-open');
+            mobileNav.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('no-scroll');
+            // Add listener for click outside when menu is open
+            document.addEventListener('click', handleClickOutside, true);
+          }
+
+          function closeMenu() {
+            newButton.setAttribute('aria-expanded', 'false');
+            newButton.classList.remove('is-active');
+            mobileNav.classList.remove('is-open');
+            mobileNav.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('no-scroll');
+            // Remove listener for click outside when menu is closed
+            document.removeEventListener('click', handleClickOutside, true);
+          }
+
+          newButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent click from bubbling to document
+            const isOpened = newButton.getAttribute('aria-expanded') === 'true';
+            if (isOpened) {
+              closeMenu();
+            } else {
+              openMenu();
+            }
           });
 
-          // Ensure correct initial ARIA state if menu is closed on page load
-          // (especially if JS re-runs and menu was left open from a previous interaction)
+          if (closeButton) {
+            closeButton.addEventListener('click', (event) => {
+              event.stopPropagation(); 
+              closeMenu();
+            });
+          }
+
+          function handleClickOutside(event) {
+            // If click is on the hamburger button or its children, do nothing
+            if (newButton.contains(event.target)) {
+              return;
+            }
+            // If click is inside mobileNav but not on the close button, do nothing
+            if (mobileNav.contains(event.target) && (!closeButton || !closeButton.contains(event.target))) {
+                // Exception: if a nav link is clicked, we DO want to close the menu
+                if (event.target.tagName === 'A' && mobileNav.contains(event.target)) {
+                    closeMenu();
+                    return;
+                }
+                // Otherwise, if it's just a click inside the menu body, don't close
+                return; 
+            }
+            // If menu is open and click is outside, close it
+            if (mobileNav.classList.contains('is-open')) {
+              closeMenu();
+            }
+          }
+
+          // Initial state check
           if (!mobileNav.classList.contains('is-open')) {
             newButton.setAttribute('aria-expanded', 'false');
             mobileNav.setAttribute('aria-hidden', 'true');
@@ -506,24 +557,35 @@ const currentYear = new Date().getFullYear();
 
   /* Mobile Navigation Menu */
   .mobile-nav {
-    display: none; /* Hidden by default, JS toggles via .is-open */
+    display: none; /* Hidden by default */
     position: fixed;
-    top: 0;
+    top: 0; /* Will be adjusted dynamically if header is not transparent, or set to header height */
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: var(--color-dark); /* Or your desired menu background */
-    z-index: 1000; /* Ensure it's above other content */
-    overflow-y: auto; /* Allow scrolling within the menu if content is long */
-    padding-top: 6rem; /* Example: space for a close button or header */
-    text-align: center;
+    background-color: var(--color-white); /* Light background */
+    z-index: 999; /* Below sticky header (1000), but above other content */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-height: calc(100vh - 60px); /* Example: 100vh minus approx header height */
+    overflow-y: auto;
+    padding-top: 60px; /* Adjust this to match your actual header height */
   }
 
   .mobile-nav.is-open {
-    display: flex; /* Use flex to center content */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center links vertically */
+    display: block; 
+  }
+  
+  .close-mobile-menu {
+    position: absolute;
+    top: 10px; /* Adjust for padding */
+    right: var(--container-padding, 1.5rem); /* Align with container padding */
+    background: transparent;
+    border: none;
+    font-size: 2rem; /* Make X larger */
+    color: var(--color-dark);
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    z-index: 1001; /* Above mobile-nav content */
   }
 
   .mobile-nav ul {
@@ -536,9 +598,9 @@ const currentYear = new Date().getFullYear();
   }
   .mobile-nav ul li a {
     font-family: var(--font-headings);
-    color: var(--color-white); /* Changed to light text */
+    color: var(--color-dark); /* Dark text on light background */
     text-decoration: none;
-    font-size: 1rem; /* Adjusted size for dropdown */
+    font-size: 1rem;
     font-weight: 500;
     display: block;
     padding: 0.75rem 0; /* Vertical padding, no horizontal padding needed if text-align left */
@@ -550,11 +612,11 @@ const currentYear = new Date().getFullYear();
   .mobile-nav ul li a:hover,
   .mobile-nav ul li a:focus {
     color: var(--color-accent-blue);
-    background-color: #f9f9f9; /* Slight hover background */
+    background-color: #f0f0f0; /* Lighter hover for light background */
   }
   .mobile-nav .mobile-nav-cta {
-    margin-top: 1rem; /* Space above CTA */
-    padding-bottom: 0.5rem; /* Space below CTA */
+    margin-top: 1rem;
+    padding: 0.5rem var(--container-padding) 1rem; /* Add horizontal padding */
   }
   .mobile-nav .mobile-nav-cta a.cta-button {
     background-color: var(--color-secondary-gray);

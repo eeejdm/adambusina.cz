@@ -172,46 +172,40 @@ const sortedImages = gallery.data.images ? gallery.data.images.slice().sort(natu
       console.warn('GLightbox not available.');
     }
 
-    // Cube Gallery
-    // @ts-ignore // Assuming CubeGallery is attached to window or available globally by the CDN script
-    if (typeof CubeGallery !== 'undefined') { 
-      const gridContainerElement = document.getElementById('photoGridContainer');
-      if (gridContainerElement && gridContainerElement.children.length > 0) {
-        try {
-          // @ts-ignore
-          new CubeGallery('photoGridContainer', { 
-            minHeight: 200, 
-            margin: 5
-          });
-        } catch (e) {
-          console.error("Error initializing CubeGallery:", e);
+    // Cube Gallery with Polling
+    let attempts = 0;
+    const maxAttempts = 20; // Try for 2 seconds (20 * 100ms)
+    const intervalTime = 100; // 100ms
+
+    function tryInitCubeGallery() {
+      // @ts-ignore 
+      if (typeof CubeGallery !== 'undefined' || typeof window.CubeGallery !== 'undefined') {
+        const GalleryConstructor = CubeGallery || window.CubeGallery;
+        const gridContainerElement = document.getElementById('photoGridContainer');
+        if (gridContainerElement && gridContainerElement.children.length > 0) {
+          try {
+            new GalleryConstructor('photoGridContainer', { 
+              minHeight: 200, 
+              margin: 5
+            });
+          } catch (e) {
+            console.error("Error initializing CubeGallery:", e);
+          }
+        } else if (gridContainerElement) {
+          // console.log("CubeGallery: No images in #photoGridContainer to initialize.");
+        } else {
+          console.warn('CubeGallery: Container #photoGridContainer not found.');
         }
-      } else if (gridContainerElement) {
-        // console.log("CubeGallery: No images in #photoGridContainer to initialize.");
       } else {
-        console.warn('CubeGallery: Container #photoGridContainer not found.');
-      }
-    // @ts-ignore
-    } else if (typeof window.CubeGallery !== 'undefined') { // Check window object explicitly
-      const gridContainerElement = document.getElementById('photoGridContainer');
-      if (gridContainerElement && gridContainerElement.children.length > 0) {
-        try {
-          // @ts-ignore
-          new window.CubeGallery('photoGridContainer', { 
-            minHeight: 200, 
-            margin: 5
-          });
-        } catch (e) {
-          console.error("Error initializing CubeGallery (via window):", e);
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(tryInitCubeGallery, intervalTime);
+        } else {
+          console.warn('CubeGallery library did not become defined after multiple attempts.');
         }
-      } else if (gridContainerElement) {
-        // console.log("CubeGallery: No images in #photoGridContainer to initialize (via window).");
-      } else {
-        console.warn('CubeGallery: Container #photoGridContainer not found (via window).');
       }
-    } else {
-      console.warn('CubeGallery library is not defined.');
     }
+    tryInitCubeGallery(); // Start the first attempt
   }
 
   document.addEventListener('astro:page-load', initializeGalleries);
