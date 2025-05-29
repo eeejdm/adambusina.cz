@@ -9,4 +9,5 @@ inclusions:
   - text: Domluva předem na vašich očekáváních a požadavcích
   - text: Doprava po Brně zdarma
 price: Cena od 2 000 Kč
+order: 1
 ---
