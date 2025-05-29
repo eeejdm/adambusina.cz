@@ -6,11 +6,11 @@ contact_phone_detail: +420 605 856 680
 contact_instagram_url: https://instagram.com/adamsroams
 billing_details_heading: Fakturační údaje
 billing_details_content: |-
-  **Adam Bušina**
-  **Vychodilova 3157/12d 61600, Brno**
+  Adam Bušina
+  Vychodilova 3157/12d 61600, Brno
 
-  **IČ: 21941611**
-  **Fyzická osoba zapsaná v Živnostenském rejstříku v Brně od 14.8.2024**
+  IČ: 21941611
+  Fyzická osoba zapsaná v Živnostenském rejstříku v Brně od 14.8.2024
 form_heading: Pošlete mi zprávu
 form_intro_text: Pokud máte jakékoliv dotazy, nebo chcete pouze cenovou nabídku,
   neváhejte a napište mi.
