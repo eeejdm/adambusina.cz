@@ -77,6 +77,8 @@ collections:
           - { label: "Text", name: "text", widget: "string"}
       - { label: "Price", name: "price", widget: "string", required: false }
       - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Order (Sort Priority)", name: "order", widget: "number", required: false, hint: "Lower numbers appear first. Used for non-pinned items." }
+      - { label: "Pinned (Display First)", name: "pinned", widget: "boolean", default: false, required: false, hint: "Pinned items appear before all non-pinned items." }
 
   - name: "testimonials"
     label: "Testimonials"

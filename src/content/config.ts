@@ -51,9 +51,17 @@ const servicesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    // Add other fields for services here
-    // e.g., price: z.number().optional(),
-    // duration: z.string().optional(),
+    slug: z.string().optional(),
+    description: z.string(), // Assuming description is markdown, rendered with <Content />
+    inclusions: z.array(
+      z.object({
+        text: z.string(),
+      })
+    ).optional(),
+    price: z.string().optional(),
+    image: z.string().optional(), // Path to image, or handle as an Astro asset if needed
+    order: z.number().optional(),
+    pinned: z.boolean().optional().default(false),
   }),
 });
 

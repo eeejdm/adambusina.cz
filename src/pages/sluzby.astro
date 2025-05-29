@@ -1,11 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import heroImageForSluzby from '../assets/frequent_images/sluzby-hero.jpg'; // Changed image import
 
 const sluzbyPage = await getEntry('pages', 'sluzby'); // Changed to 'sluzby'
 const { Content } = await sluzbyPage.render();
+
+const servicePackagesRaw = await getCollection('services'); // Fetch service packages
+
+// Sort service packages: Pinned first, then by order, then by title
+const servicePackages = servicePackagesRaw.sort((a, b) => {
+  // Pinned items first
+  if (a.data.pinned && !b.data.pinned) return -1;
+  if (!a.data.pinned && b.data.pinned) return 1;
+
+  // If both are pinned or both are not pinned, sort by order value
+  const orderA = a.data.order ?? Infinity; // Treat undefined order as last
+  const orderB = b.data.order ?? Infinity;
+  if (orderA !== orderB) {
+    return orderA - orderB;
+  }
+
+  // Fallback to title sort if order is the same or undefined for both
+  return a.data.title.localeCompare(b.data.title);
+});
 
 const heroImageSrc = sluzbyPage.data.hero_background_image ? heroImageForSluzby : null;
 
@@ -51,6 +70,40 @@ const heroImageSrc = sluzbyPage.data.hero_background_image ? heroImageForSluzby 
           {/* This will render the main 'body' content from sluzby.md */}
           <Content /> 
         </div>
+
+        {/* Service Packages Section */}
+        {servicePackages.length > 0 && (
+          <section class="service-packages-list">
+            {servicePackages.map(async (pkg) => {
+              return (
+                <div class="service-package-card">
+                  {pkg.data.image && (
+                    <img src={pkg.data.image} alt={pkg.data.title} class="service-package-image" loading="lazy"/>
+                  )}
+                  <div class="service-package-content">
+                    <h3 class="service-package-title">{pkg.data.title}</h3>
+                    {pkg.data.description && (
+                      <div class="service-package-description" set:html={pkg.data.description}></div>
+                    )}
+                    {pkg.data.inclusions && pkg.data.inclusions.length > 0 && (
+                      <div class="service-package-inclusions">
+                        <h4 class="inclusions-heading">Co všechno zde dostanete?</h4>
+                        <ul>
+                          {pkg.data.inclusions.map(inclusion => (
+                            <li>{inclusion.text}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {pkg.data.price && (
+                      <p class="service-package-price">{pkg.data.price}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        )}
 
         {/* Display travel_fee_text if available, similar to after_text on omne page */}
         {sluzbyPage.data.travel_fee_text && (
@@ -273,6 +326,110 @@ const heroImageSrc = sluzbyPage.data.hero_background_image ? heroImageForSluzby 
     }
     .travel-fee-text {
       font-size: 0.95rem;
+    }
+  }
+
+  .service-packages-list {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to one column */
+    gap: 2rem; /* Space between cards */
+    margin-top: 3rem; /* Space above the packages list */
+    margin-bottom: 3rem; /* Space below the packages list */
+  }
+
+  .service-package-card {
+    background-color: var(--color-secondary-gray);
+    border-radius: 16px; /* Rounded corners */
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    color: var(--color-dark);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .service-package-image {
+    width: 100%;
+    max-height: 300px; /* Limit image height */
+    object-fit: cover;
+    border-radius: 8px; /* Rounded corners for image */
+    margin-bottom: 1.5rem;
+  }
+
+  .service-package-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows price to be pushed to the bottom if cards have varying content height */
+  }
+
+  .service-package-title {
+    font-size: clamp(1.5rem, 4vw, 1.75rem); /* Responsive title size */
+    color: var(--color-accent-blue); /* Or your primary heading color */
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .service-package-description {
+    margin-bottom: 1.5rem;
+    font-size: 1rem; /* Changed from 0.95rem to 1rem (16px) */
+    line-height: 1.6;
+  }
+  .service-package-description :global(p) {
+    margin-bottom: 1em;
+  }
+  .service-package-description :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+
+  .service-package-inclusions {
+    margin-bottom: 1.5rem;
+  }
+
+  .inclusions-heading {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    color: var(--color-dark-gray); /* Slightly softer than main text */
+    margin-bottom: 0.75rem;
+  }
+
+  .service-package-inclusions ul {
+    list-style: disc; /* Default bullets, or use custom icons */
+    padding-left: 1.25rem; /* Indent list items */
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .service-package-inclusions li {
+    margin-bottom: 0.5rem;
+  }
+
+  .service-package-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--color-accent-blue); /* Or a prominent color */
+    margin-top: auto; /* Pushes price to the bottom */
+    padding-top: 1rem; /* Space above price if content above is short */
+    border-top: 1px solid var(--color-light-gray); /* Separator line */
+    text-align: right;
+  }
+  
+  @media (min-width: 769px) {
+    .service-packages-list {
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive columns */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .service-package-card {
+      padding: 1.5rem;
+    }
+    .service-package-title {
+      text-align: center;
+    }
+     .inclusions-heading {
+      text-align: center;
+    }
+    .service-package-price {
+      text-align: center;
     }
   }
 </style> 
