@@ -1,5 +1,5 @@
 ---
-// import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from 'astro:transitions';
 // import { Image } from 'astro:assets'; // Using standard img tag for CMS-sourced logo for simplicity
 import settingsData from '../../src/content/settings/config.json'; // Renamed to avoid conflict
 
@@ -68,7 +68,7 @@ const currentYear = new Date().getFullYear();
     {/* GLightbox CSS */}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
-    {/* <ViewTransitions /> */}
+    <ViewTransitions />
     {/* <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> */}
 	</head>
 	<body>
