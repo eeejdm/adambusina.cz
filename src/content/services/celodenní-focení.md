@@ -9,4 +9,5 @@ inclusions:
   - text: Doprava po Brně zdarma
   - text: Příjezd nejméně hodinu před a následná domluva na detailech programu apod.
 price: Cena od 15 000 Kč
+order: 3
 ---
