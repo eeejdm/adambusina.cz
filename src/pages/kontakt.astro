@@ -54,7 +54,13 @@ const staticFormName = "kontakt-stranka-form"; // Static form name
           {data.form_heading && <h2 class="section-heading form-section-heading">{data.form_heading}</h2>}
           {data.form_intro_text && <div class="form-intro" set:html={data.form_intro_text}></div>}
           
-          <form name={staticFormName} method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+          <form 
+            name={staticFormName} 
+            method="POST" 
+            data-netlify="true" 
+            data-netlify-honeypot="bot-field"
+            action="/thank-you/"
+          >
             <input type="hidden" name="form-name" value={staticFormName} />
             <p class="hidden">
               <label>Don't fill this out if you're human: <input name="bot-field" /></label>
