@@ -1,151 +1,278 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getEntry, getCollection } from 'astro:content';
-import { Image } from 'astro:assets'; // For hero background and service images
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import heroImageForSluzby from '../assets/frequent_images/sluzby-hero.jpg'; // Changed image import
 
-const pageData = await getEntry('pages', 'sluzby');
-const { Content } = await pageData.render();
+const sluzbyPage = await getEntry('pages', 'sluzby'); // Changed to 'sluzby'
+const { Content } = await sluzbyPage.render();
 
-const servicePackages = await getCollection('services');
+const heroImageSrc = sluzbyPage.data.hero_background_image ? heroImageForSluzby : null;
+
 ---
-<BaseLayout title={pageData.data.title} description={pageData.data.seo_description}>
-  <div class="container page-container">
-    {pageData.data.hero_heading && (
-      <section class="page-hero text-center" style={pageData.data.hero_background_image ? `background-image: url(${pageData.data.hero_background_image}); background-size: cover; background-position: center; padding: 4rem 0; color: white;` : ''}>
-        <h1>{pageData.data.hero_heading}</h1>
-        {pageData.data.hero_cta_text && <div class="hero-subtext" set:html={pageData.data.hero_cta_text}></div>}
-        {pageData.data.hero_cta_label && pageData.data.hero_cta_link && (
-          <a href={pageData.data.hero_cta_link} class="cta-button">{pageData.data.hero_cta_label}</a>
-        )}
-      </section>
-    )}
-
-    <article class="main-content-intro">
-      <Content />
-    </article>
-
-    <section class="service-packages-section">
-      <h2>Naše Služby</h2>
-      {servicePackages.length > 0 ? (
-        <div class="services-grid">
-          {servicePackages.map(service => (
-            <div class="service-card">
-              {service.data.image && (
-                <img src={service.data.image} alt={service.data.title} class="service-card-image" />
-                // If image is in src/assets and needs optimization:
-                // <Image src={/* import serviceImg from 'path_to_image_in_assets'; serviceImg */} alt={service.data.title} class="service-card-image" width={400} height={250} />
-              )}
-              <h3>{service.data.title}</h3>
-              {service.data.description && <Fragment set:html={service.data.description} />}
-              {service.data.inclusions && service.data.inclusions.length > 0 && (
-                <ul class="inclusions-list">
-                  {service.data.inclusions.map(inclusion => (
-                    <li>{inclusion.text}</li>
-                  ))}
-                </ul>
-              )}
-              {service.data.price && <p class="price">Cena: {service.data.price}</p>}
-              {/* Optional: Link to individual service page if slugs are used and pages exist */}
-              {/* <a href={`/sluzby/${service.slug}`} class="cta-button">Více informací</a> */}
-            </div>
-          ))}
+<BaseLayout title={sluzbyPage.data.title} description={sluzbyPage.data.seo_description}>
+  <article class="sluzby-page"> {/* Changed class name */}
+    {heroImageSrc && (
+      <section class="hero-section-sluzby"> {/* Changed class name */}
+        <Image 
+          src={heroImageSrc} 
+          alt={sluzbyPage.data.hero_heading || 'Služby hero pozadí'} 
+          class="hero-background-image" 
+          widths={[768, 1024, 1920]} 
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw" 
+          loading="eager"
+          format="avif"
+          quality={80}
+        />
+        <div class="hero-overlay"></div>
+        <div class="hero-content-sluzby container"> {/* Changed class name and structure for 2 columns */}
+          <div class="hero-column-left">
+            {sluzbyPage.data.hero_heading && (
+              <h1 class="hero-title">{sluzbyPage.data.hero_heading}</h1>
+            )}
+          </div>
+          <div class="hero-column-right">
+            {sluzbyPage.data.hero_cta_text && (
+              <div class="hero-subheading-text" set:html={sluzbyPage.data.hero_cta_text}></div>
+            )}
+            {sluzbyPage.data.hero_cta_label && sluzbyPage.data.hero_cta_link && (
+              <a href={sluzbyPage.data.hero_cta_link} class="cta-button hero-cta">
+                {sluzbyPage.data.hero_cta_label}
+              </a>
+            )}
+          </div>
         </div>
-      ) : (
-        <p>Aktuálně nejsou definovány žádné balíčky služeb. Pro více informací nás <a href="/kontakt">kontaktujte</a>.</p>
-      )}
+      </section>
+    )}
+
+    <section class="content-section-sluzby"> {/* Changed class name */}
+      <div class="container">
+        <div class="styled-content-box">
+          {/* This will render the main 'body' content from sluzby.md */}
+          <Content /> 
+        </div>
+
+        {/* Display travel_fee_text if available, similar to after_text on omne page */}
+        {sluzbyPage.data.travel_fee_text && (
+          <p class="travel-fee-text">{sluzbyPage.data.travel_fee_text}</p>
+        )}
+
+        <div class="cta-buttons-sluzby"> {/* Changed class name */}
+          {/* These CTAs are for the bottom of the page, similar to omne.astro */}
+          {sluzbyPage.data.gallery_cta_label && sluzbyPage.data.gallery_cta_link && (
+            <a href={sluzbyPage.data.gallery_cta_link} class="cta-button">{sluzbyPage.data.gallery_cta_label}</a>
+          )}
+          {/* You might want a contact CTA here as well, if applicable for Služby page */}
+          {sluzbyPage.data.contact_cta_label && sluzbyPage.data.contact_cta_link && (
+            <a href={sluzbyPage.data.contact_cta_link} class="cta-button secondary">{sluzbyPage.data.contact_cta_label}</a>
+          )}
+        </div>
+      </div>
     </section>
-
-    {pageData.data.travel_fee_text && (
-      <section class="travel-fee-info text-center">
-        <p>{pageData.data.travel_fee_text}</p>
-      </section>
-    )}
-
-    {pageData.data.gallery_cta_label && pageData.data.gallery_cta_link && (
-      <section class="cta-section text-center">
-        <a href={pageData.data.gallery_cta_link} class="cta-button">{pageData.data.gallery_cta_label}</a>
-      </section>
-    )}
-  </div>
+  </article>
 </BaseLayout>
 
 <style>
-  .page-container {
-    padding-top: 2rem;
+  /* General page class */
+  .sluzby-page {}
+
+  /* Hero Section Styles */
+  .hero-section-sluzby {
+    position: relative;
+    width: 100%;
+    height: 500px; 
+    overflow: hidden;
+  }
+
+  .hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 32, 34, 0.72);
+    z-index: 2;
+  }
+
+  .hero-content-sluzby {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: single column */
+    align-items: center;
+    gap: 1rem; /* Gap for mobile stacked layout */
+    color: var(--color-white);
+    padding-top: 2rem; /* Add some padding for mobile view */
     padding-bottom: 2rem;
   }
-  .page-hero {
-    margin-bottom: 2rem;
-    border-radius: 8px;
-  }
-  .page-hero h1, .page-hero .hero-subtext {
-    color: inherit; /* Inherits from .page-hero or defaults if no bg */
-  }
-  .hero-subtext :global(p) {
-    margin-bottom: 1.5rem;
-    font-size: 1.1em;
-  }
-  .main-content-intro {
-    background-color: var(--color-white);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 2rem;
-  }
-  .service-packages-section h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2.2rem;
-  }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-  .service-card {
-    background-color: var(--color-white);
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+  .hero-column-left {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align heading to the left */
+    text-align: left;
   }
-  .service-card-image {
-    width: 100%;
-    height: 200px; /* Fixed height for consistency */
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 1rem;
+
+  .hero-column-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Default for mobile, overridden for large screens */
+    text-align: center; /* Default for mobile */
   }
-  .service-card h3 {
-    margin-top: 0;
-    color: var(--color-accent-blue);
+  
+  .hero-title {
+    font-size: clamp(2.1875rem, 5vw, 3rem); 
+    font-weight: 700;
+    color: var(--color-white);
+    margin: 0;
   }
-  .inclusions-list {
-    list-style: disc; /* Or checkmark icons */
-    padding-left: 1.5em;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    flex-grow: 1;
+
+  .hero-subheading-text {
+    font-size: 1rem; /* Changed to 16px */
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    max-width: 450px; 
+    color: var(--color-light-gray); 
+    text-align: left; /* Added text-align left */
   }
-  .price {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-top: auto; /* Pushes price to bottom if card height varies */
+  /* Remove bottom margin from paragraphs inside the subheading if CMS adds them via markdown */
+  .hero-subheading-text :global(p) {
+    margin-bottom: 0;
   }
-  .travel-fee-info {
-    padding: 1.5rem;
-    margin-top: 2rem;
+   .hero-subheading-text :global(p:last-of-type) {
+    margin-bottom: 0; /* Ensure last p also has no margin if followed by button */
+  }
+
+
+  .hero-cta {
+    /* Inherits .cta-button styles, add specifics if needed */
+    /* e.g., background-color: var(--color-accent-orange); */
+  }
+
+  /* Content Section Styles */
+  .content-section-sluzby {
+    padding: 3rem 0;
+  }
+
+  .styled-content-box {
     background-color: var(--color-secondary-gray);
-    border-radius: 4px;
-    color: var(--color-dark);
+    color: var(--color-dark); 
+    padding: 2rem;
+    border-radius: 16px; 
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
-  .cta-section {
-    padding: 2rem 0;
+  .styled-content-box :global(p) {
+    margin-bottom: 1.5em; /* Slightly less than omne page */
+    font-size: 1rem; 
+  }
+  .styled-content-box :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .styled-content-box :global(a) {
+    color: var(--color-accent-blue);
+    text-decoration: underline;
+  }
+  .styled-content-box :global(a:hover) {
+    color: var(--color-primary-gray); /* Check if this should be accent or primary */
+  }
+  .styled-content-box :global(h1),
+  .styled-content-box :global(h2),
+  .styled-content-box :global(h3),
+  .styled-content-box :global(h4),
+  .styled-content-box :global(h5),
+  .styled-content-box :global(h6) {
+    text-align: center;
+    margin-bottom: 1.5rem; /* Spacing for headings in content box */
+  }
+
+  .travel-fee-text {
+    font-weight: normal; /* Changed from bold for less emphasis than after_text */
+    font-style: italic;
+    font-size: 1rem; /* Normal paragraph size */
+    text-align: center;
     margin-top: 2rem;
-    border-top: 1px solid #eee;
+    margin-bottom: 1.5rem;
+    color: var(--color-medium-gray); /* Softer color */
   }
-  .cta-section .cta-button {
-    margin: 0.5rem;
+
+  .cta-buttons-sluzby {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 769px) { /* Tablet and above */
+    .hero-content-sluzby {
+      grid-template-columns: 1fr 1fr; /* Two equal columns */
+      align-items: center; 
+      padding-top: 0; /* Reset padding */
+      padding-bottom: 0;
+    }
+    .hero-column-left {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .hero-column-right {
+      align-items: flex-start; /* Changed from center to flex-start for left alignment */
+      text-align: left; /* Ensure containing block allows left alignment */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section-sluzby {
+      height: auto; 
+      min-height: 450px; 
+      display: flex; /* Added for vertical centering */
+      flex-direction: column; /* Added for vertical centering */
+      justify-content: center; /* Added for vertical centering */
+      align-items: center; /* Added for horizontal centering of content block */
+    }
+    .hero-content-sluzby {
+      grid-template-columns: 1fr; 
+      gap: 1.5rem; 
+      padding-top: 0; /* Adjusted padding */
+      padding-bottom: 0; /* Adjusted padding */
+      width: 100%; /* Ensure it takes full width of container for centering */
+    }
+    .hero-column-left, .hero-column-right {
+      align-items: center; /* Center all items within their respective areas */
+      text-align: center;
+    }
+    .hero-title {
+      margin-bottom: 0.5rem; /* Reduced margin when stacked */
+    }
+    .hero-subheading-text {
+       margin-bottom: 1.5rem; /* Ensure space before button */
+       text-align: center; /* Added for small screens */
+    }
+    .content-section-sluzby {
+      padding: 2rem 0;
+    }
+    .styled-content-box {
+      padding: 1.5rem;
+    }
+    .styled-content-box :global(p) {
+      text-align: center; /* Optional: center paragraph text in content box on mobile */
+    }
+    .travel-fee-text {
+      font-size: 0.95rem;
+    }
   }
 </style> 

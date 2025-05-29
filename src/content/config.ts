@@ -34,12 +34,16 @@ const pagesCollection = defineCollection({
     // Fields for O Mně page (and potentially other pages)
     hero_heading: z.string().optional(),
     hero_background_image: z.string().optional(),
+    hero_cta_text: z.string().optional(),
+    hero_cta_label: z.string().optional(),
+    hero_cta_link: z.string().optional(),
     after_text: z.string().optional(),
     gallery_cta_label: z.string().optional(),
     gallery_cta_link: z.string().optional(),
     contact_cta_label: z.string().optional(),
     contact_cta_link: z.string().optional(),
     seo_description: z.string().optional(),
+    travel_fee_text: z.string().optional(),
   }),
 });
 

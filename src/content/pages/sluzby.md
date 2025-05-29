@@ -1,7 +1,7 @@
 ---
 title: Služby | Adam Bušina | Fotograf
 hero_heading: Služby
-hero_background_image: /assets/images/uploads/dsc01864-enhanced-nr.jpg
+hero_background_image: /assets/frequent_images/sluzby-hero.jpg
 hero_cta_text: |-
   
   Chcete zjistit, co by vám focení přineslo?
