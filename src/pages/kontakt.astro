@@ -1,125 +1,266 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+// import { Icon } from 'astro-icon/components'; // Example if you use astro-icon
 
-const pageData = await getEntry('pages', 'kontakt');
-const { Content } = await pageData.render();
+const kontaktPage = await getEntry('pages', 'kontakt');
+const { data } = kontaktPage; // Main page data from frontmatter
+// const { Content } = await kontaktPage.render(); // For main body content if any, not used for specific fields here
+
+// Helper for Netlify forms
+const formName = "kontakt-" + new Date().toISOString().replace(/[^0-9]/g, "");
 ---
-<BaseLayout title={pageData.data.title} description={pageData.data.seo_description}>
-  <div class="container page-container">
-    <header class="page-header text-center">
-      <h1>{pageData.data.title}</h1>
-    </header>
+<BaseLayout title={data.title} description={data.seo_description}>
+  <article class="kontakt-page container">
+    
+    <section class="top-contact-section">
+      <div class="contact-details-column">
+        {data.contact_section_heading && <h2 class="section-heading">{data.contact_section_heading}</h2>}
+        <ul class="contact-links">
+          {data.contact_email_detail && (
+            <li>
+              {/* <Icon name="mdi:email-outline" class="contact-icon" /> Placeholder */}
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+              <a href={`mailto:${data.contact_email_detail}`}>{data.contact_email_detail}</a>
+            </li>
+          )}
+          {data.contact_phone_detail && (
+            <li>
+              {/* <Icon name="mdi:phone-outline" class="contact-icon" /> Placeholder */}
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+              <a href={`tel:${data.contact_phone_detail.replace(/\s/g, '')}`}>{data.contact_phone_detail}</a>
+            </li>
+          )}
+          {data.contact_instagram_url && (
+            <li>
+              {/* <Icon name="mdi:instagram" class="contact-icon" /> Placeholder */}
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8c1.99 0 3.6-1.61 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+              <a href={data.contact_instagram_url} target="_blank" rel="noopener noreferrer">Instagram</a>
+            </li>
+          )}
+        </ul>
+      </div>
 
-    <div class="contact-layout">
-      <article class="contact-content">
-        {pageData.data.form_heading && <h2>{pageData.data.form_heading}</h2>}
-        {pageData.data.form_intro_text && <Fragment set:html={pageData.data.form_intro_text} />}
-        
-        {/* Basic Contact Form Placeholder - Replace with a real form solution */}
-        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="contact-form">
-          <input type="hidden" name="form-name" value="contact" />
-          <p class="hidden">
-            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-          </p>
-          <p>
-            <label for="name">Jméno:</label>
-            <input type="text" name="name" id="name" required />
-          </p>
-          <p>
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required />
-          </p>
-          <p>
-            <label for="subject">Předmět:</label>
-            <input type="text" name="subject" id="subject" />
-          </p>
-          <p>
-            <label for="message">Zpráva:</label>
-            <textarea name="message" id="message" rows="5" required></textarea>
-          </p>
-          <p>
+      <div class="billing-details-column">
+        {data.billing_details_heading && <h2 class="section-heading">{data.billing_details_heading}</h2>}
+        {data.billing_details_content && <div class="billing-content" set:html={data.billing_details_content}></div>}
+      </div>
+    </section>
+
+    <section class="form-map-section">
+      <div class="form-map-box">
+        <div class="form-column">
+          {data.form_heading && <h2 class="section-heading form-section-heading">{data.form_heading}</h2>}
+          {data.form_intro_text && <div class="form-intro" set:html={data.form_intro_text}></div>}
+          
+          <form name={formName} method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value={formName} />
+            <p class="hidden">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            
+            <div class="form-group">
+              <label for="name">Jméno a příjmení</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Telefon (nepovinné)</label>
+              <input type="tel" id="phone" name="phone" />
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Zpráva</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            
             <button type="submit" class="cta-button">Odeslat zprávu</button>
-          </p>
-        </form>
-        
-        <Content /> {/* For additional markdown content from CMS */}
-      </article>
+          </form>
+        </div>
 
-      <aside class="contact-sidebar">
-        {pageData.data.billing_details_heading && <h3>{pageData.data.billing_details_heading}</h3>}
-        {pageData.data.billing_details_content && <Fragment set:html={pageData.data.billing_details_content} />}
+        <div class="map-column">
+          {data.map_embed_code && <div class="map-embed" set:html={data.map_embed_code}></div>}
+        </div>
+      </div>
+    </section>
 
-        {pageData.data.map_embed_code && (
-          <div class="map-embed" set:html={pageData.data.map_embed_code}>
-            {/* Map will be embedded here */}
-          </div>
-        )}
-      </aside>
-    </div>
-
-  </div>
+  </article>
 </BaseLayout>
 
 <style>
-  .page-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+  .kontakt-page {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
-  .page-header {
-    margin-bottom: 2rem;
-  }
-  .contact-layout {
+
+  .top-contact-section {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Main content wider than sidebar */
+    grid-template-columns: 1fr;
     gap: 2rem;
-  }
-  .contact-content, .contact-sidebar {
-    background-color: var(--color-white);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 3rem;
   }
 
-  .contact-form p {
+  .section-heading {
+    font-size: clamp(1.5rem, 4vw, 1.875rem); /* 24px to 30px */
+    margin-bottom: 1.5rem;
+    color: var(--color-dark);
+  }
+  
+  .contact-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .contact-links li {
+    display: flex;
+    align-items: center;
     margin-bottom: 1rem;
+    font-size: 1.125rem; /* 18px */
   }
-  .contact-form label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 500;
+  .contact-links .contact-icon {
+    margin-right: 0.75rem;
+    color: var(--color-accent-blue); /* Or your preferred icon color */
+    width: 28px; /* Increased size */
+    height: 28px; /* Increased size */
   }
-  .contact-form input[type="text"],
-  .contact-form input[type="email"],
-  .contact-form textarea {
-    width: 100%;
-    padding: 0.75em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: var(--font-text);
-    font-size: 1rem;
+  .contact-links a {
+    color: var(--color-dark-gray);
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
-  .contact-form textarea {
-    min-height: 120px;
-  }
-  .contact-form .hidden {
-    display: none;
+  .contact-links a:hover {
+    color: var(--color-accent-blue);
   }
 
-  .map-embed {
-    margin-top: 1.5rem;
+  .billing-content {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .billing-content :global(p) {
+    margin-bottom: 1em;
+  }
+   .billing-content :global(strong) {
+    color: var(--color-dark);
+  }
+
+  .form-map-section {
+    margin-top: 3rem;
+  }
+
+  .form-map-box {
+    background-color: var(--color-secondary-gray);
+    border-radius: 16px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .form-section-heading {
+    text-align: center; /* Center form heading */
+  }
+  
+  .form-intro {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .form-intro :global(p) {
+    margin-bottom: 0.5em;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-dark-gray);
+  }
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--color-white);
+    color: var(--color-dark);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 0 3px rgba(var(--color-accent-blue-rgb), 0.25);
+  }
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .cta-button { /* Assuming global .cta-button for form submit button */
+    width: 100%; /* Make button full width in its column */
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+  
+  .map-column {
+    min-height: 300px; /* Ensure map column has some height */
   }
   .map-embed :global(iframe) {
+    border-radius: 12px; /* Rounded corners for the iframe */
+    border: none;
     width: 100%;
-    min-height: 300px;
-    border-radius: 4px;
-    border: 0;
+    height: 100%;
+    min-height: 400px; /* Ensure iframe itself has good height */
   }
 
-  /* Responsive adjustments */
+  .hidden { /* For Netlify honeypot */
+    position: absolute;
+    left: -5000px;
+  }
+
+  @media (min-width: 769px) {
+    .top-contact-section {
+      grid-template-columns: 1fr 1fr; /* Two columns for contact/billing */
+      gap: 3rem;
+    }
+    .form-map-box {
+      grid-template-columns: 1fr 1fr; /* Two columns for form/map */
+      padding: 3rem;
+      gap: 3rem;
+    }
+    .form-section-heading, .form-intro {
+      text-align: left; /* Align left on larger screens */
+    }
+    .cta-button {
+      width: auto; /* Reset width for CTA on larger screens if needed */
+    }
+  }
   @media (max-width: 768px) {
-    .contact-layout {
-      grid-template-columns: 1fr; /* Stack on smaller screens */
+    .section-heading, .form-section-heading { /* Center headings on mobile */
+        text-align: center;
+    }
+    .contact-links li {
+        font-size: 1rem; /* Slightly smaller on mobile */
+    }
+     .contact-links .contact-icon {
+        width: 24px;
+        height: 24px;
+    }
+    .billing-content {
+        text-align: center;
     }
   }
 </style> 

@@ -44,6 +44,17 @@ const pagesCollection = defineCollection({
     contact_cta_link: z.string().optional(),
     seo_description: z.string().optional(),
     travel_fee_text: z.string().optional(),
+
+    // Contact Page Specific Fields
+    contact_section_heading: z.string().optional(),
+    contact_email_detail: z.string().email().optional(),
+    contact_phone_detail: z.string().optional(),
+    contact_instagram_url: z.string().url().optional(),
+    billing_details_heading: z.string().optional(),
+    billing_details_content: z.string().optional(), // Rendered as Markdown
+    form_heading: z.string().optional(),
+    form_intro_text: z.string().optional(), // Rendered as Markdown
+    map_embed_code: z.string().optional(),
   }),
 });
 

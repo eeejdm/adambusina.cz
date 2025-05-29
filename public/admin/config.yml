@@ -266,6 +266,10 @@ collections:
         file: "src/content/pages/kontakt.md" # Will render at /kontakt
         fields:
           - { label: "Page Title (for SEO & tab)", name: "title", widget: "string", default: "Kontakt" }
+          - { label: "Contact Section Heading", name: "contact_section_heading", widget: "string", required: false, default: "Kontakt"}
+          - { label: "Display Email", name: "contact_email_detail", widget: "string", required: false }
+          - { label: "Display Phone", name: "contact_phone_detail", widget: "string", required: false }
+          - { label: "Instagram URL", name: "contact_instagram_url", widget: "string", required: false, hint: "Full URL, e.g., https://instagram.com/username" }
           - { label: "Billing Details Heading", name: "billing_details_heading", widget: "string", required: false, default: "Fakturační údaje" }
           - { label: "Billing Details Content", name: "billing_details_content", widget: "markdown", required: false }
           - { label: "Form Heading", name: "form_heading", widget: "string", required: false, default: "Napište mi" }

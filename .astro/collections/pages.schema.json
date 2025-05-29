@@ -52,6 +52,35 @@
         "travel_fee_text": {
           "type": "string"
         },
+        "contact_section_heading": {
+          "type": "string"
+        },
+        "contact_email_detail": {
+          "type": "string",
+          "format": "email"
+        },
+        "contact_phone_detail": {
+          "type": "string"
+        },
+        "contact_instagram_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "billing_details_heading": {
+          "type": "string"
+        },
+        "billing_details_content": {
+          "type": "string"
+        },
+        "form_heading": {
+          "type": "string"
+        },
+        "form_intro_text": {
+          "type": "string"
+        },
+        "map_embed_code": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }
