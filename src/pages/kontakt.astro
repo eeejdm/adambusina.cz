@@ -209,21 +209,39 @@ const formName = "kontakt-" + new Date().toISOString().replace(/[^0-9]/g, "");
     min-height: 100px;
   }
 
-  .cta-button { /* Assuming global .cta-button for form submit button */
-    width: 100%; /* Make button full width in its column */
+  /* Specific styling for the contact form submit button */
+  form .cta-button {
+    width: 100%; /* Default for mobile */
     padding-top: 0.875rem;
     padding-bottom: 0.875rem;
+    background-color: var(--color-accent-blue); /* Primary color */
+    color: var(--color-white);
+    border: none; /* Assuming cta-button might have a border we want to override */
+    border-radius: 26px; /* Consistent with global cta-button if updated */
+    text-transform: uppercase; /* Example */
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  form .cta-button:hover {
+    background-color: var(--color-dark); /* Dark color on hover */
+    color: var(--color-white);
   }
   
   .map-column {
-    min-height: 300px; /* Ensure map column has some height */
+    min-height: 300px; 
+    display: flex; /* Added for stretching map-embed */
+    flex-direction: column; /* Added for stretching map-embed */
+  }
+  .map-embed {
+    flex-grow: 1; /* Added to make map-embed fill map-column */
+    display: flex; /* To make iframe fill this div */
   }
   .map-embed :global(iframe) {
-    border-radius: 12px; /* Rounded corners for the iframe */
+    border-radius: 12px; 
     border: none;
     width: 100%;
-    height: 100%;
-    min-height: 400px; /* Ensure iframe itself has good height */
+    height: 100%; /* Changed from min-height to height */
+    /* min-height might still be useful if you want a minimum on very small containers, but height: 100% is key for flex */
   }
 
   .hidden { /* For Netlify honeypot */
@@ -233,19 +251,25 @@ const formName = "kontakt-" + new Date().toISOString().replace(/[^0-9]/g, "");
 
   @media (min-width: 769px) {
     .top-contact-section {
-      grid-template-columns: 1fr 1fr; /* Two columns for contact/billing */
+      grid-template-columns: 1fr 1fr; 
       gap: 3rem;
     }
     .form-map-box {
-      grid-template-columns: 1fr 1fr; /* Two columns for form/map */
+      /* grid-template-columns: 1fr 1fr; Using flex now for height matching */
+      display: flex; /* Changed from grid to flex */
+      align-items: stretch; /* Make columns equal height */
       padding: 3rem;
       gap: 3rem;
     }
-    .form-section-heading, .form-intro {
-      text-align: left; /* Align left on larger screens */
+    .form-column, .map-column { /* Ensure columns can take up flex space */
+        flex-basis: 0; /* Allow them to grow/shrink equally */
+        flex-grow: 1;
     }
-    .cta-button {
-      width: auto; /* Reset width for CTA on larger screens if needed */
+    .form-section-heading, .form-intro {
+      text-align: left; 
+    }
+    form .cta-button {
+      width: auto; /* Reset width for CTA on larger screens */
     }
   }
   @media (max-width: 768px) {
@@ -254,6 +278,7 @@ const formName = "kontakt-" + new Date().toISOString().replace(/[^0-9]/g, "");
     }
     .contact-links li {
         font-size: 1rem; /* Slightly smaller on mobile */
+        justify-content: center; /* Center icon and text within li */
     }
      .contact-links .contact-icon {
         width: 24px;
