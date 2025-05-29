@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="404 - Stránka nenalezena">
+  <div class="container error-page-container">
+    <h1 class="error-heading">404</h1>
+    <p class="error-message">Omlouváme se, ale požadovaná stránka nebyla nalezena.</p>
+    <a href="/" class="cta-button">Zpět na hlavní stránku</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .error-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh; /* Adjust as needed */
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .error-heading {
+    font-size: clamp(4rem, 15vw, 8rem);
+    color: var(--color-primary-gray);
+    margin-bottom: 1rem;
+  }
+  .error-message {
+    font-size: clamp(1.125rem, 4vw, 1.5rem);
+    color: var(--color-text-body);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+  }
+  .error-page-container .cta-button {
+    /* Styles for CTA button are expected to be global */
+    /* Example specific override if needed: */
+    /* background-color: var(--color-accent-blue); */
+    /* color: var(--color-white); */
+  }
+</style> 

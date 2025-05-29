@@ -122,9 +122,24 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
             {homepageContent.about_section_icon_features.map(feature => (
               <div class="icon-feature-item">
                 <div class="icon-circle">
-                  {feature.icon_type === 'camera' && <span class="icon-placeholder">[C]</span>}
-                  {feature.icon_type === 'person' && <span class="icon-placeholder">[P]</span>}
-                  {feature.icon_type === 'clock' && <span class="icon-placeholder">[T]</span>} 
+                  {feature.icon_type === 'camera' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-camera">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                  )}
+                  {feature.icon_type === 'person' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-user">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  )}
+                  {feature.icon_type === 'clock' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  )}
                 </div>
                 <div class="icon-feature-content">
                   <h4>{feature.heading}</h4>
@@ -183,8 +198,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
               <div class="testimonial-item">
                 <blockquote set:html={homepageTestimonials[0].data.quote.replace(/\n/g, '<br>')} />
                 <cite>
-                  {homepageTestimonials[0].data.author_name}
-                  {homepageTestimonials[0].data.author_context && <span>, {homepageTestimonials[0].data.author_context}</span>}
+                  {homepageTestimonials[0].data.author_name}{homepageTestimonials[0].data.author_context && <span>, {homepageTestimonials[0].data.author_context}</span>}
                 </cite>
               </div>
             )}
@@ -194,8 +208,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
               <div class="testimonial-item">
                 <blockquote set:html={testimonial.data.quote.replace(/\n/g, '<br>')} />
                 <cite>
-                  {testimonial.data.author_name}
-                  {testimonial.data.author_context && <span>, {testimonial.data.author_context}</span>}
+                  {testimonial.data.author_name}{testimonial.data.author_context && <span>, {testimonial.data.author_context}</span>}
                 </cite>
               </div>
             ))}
@@ -224,6 +237,10 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
           <div class="form-group">
             <label for="email">E-mail</label>
             <input type="email" name="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefon (nepovinné)</label>
+            <input type="tel" name="phone" id="phone" />
           </div>
           <div class="form-group">
             <label for="message">Zpráva</label>
@@ -374,7 +391,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
 
   .section-intro {
     text-align: center;
-    font-size: 1.1rem; /* Or use var(--p-large-font-size) */
+    font-size: 1rem; /* Changed from 1.1rem (approx 17.6px) to 1rem (16px if base is 16px) */
     max-width: 70ch;
     margin-left: auto;
     margin-right: auto;
@@ -539,37 +556,53 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
   }
 
   .about-me-icon-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem; 
+    display: flex;
+    justify-content: space-around; /* Or space-between */
+    gap: 1rem;
+    margin-top: 3rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
   }
 
   .icon-feature-item {
     display: flex;
-    align-items: center; /* Always center icon with heading */
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 180px; /* Adjust as needed */
   }
 
-  .icon-circle { 
-    width: 50px;
-    height: 50px;
+  .icon-circle {
+    width: 70px; /* Or your desired size */
+    height: 70px; /* Or your desired size */
+    background-color: var(--color-dark); /* Changed from background to dark */
     border-radius: 50%;
-    background-color: var(--color-dark); 
-    color: var(--color-white); 
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 1.5rem; 
-    font-weight: bold;
-    flex-shrink: 0; 
+    justify-content: center;
+    margin-bottom: 1rem; /* Space between icon and text */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: subtle shadow */
   }
 
   .icon-feature-content h4 {
-    font-size: 1.25rem;
-    color: var(--color-white);
-    margin-top: 0;
-    margin-bottom: 0; /* Always 0 as there's no text below */
+    margin: 0;
+    font-size: 1.1rem; /* Adjust as needed */
+    color: var(--color-white); /* Changed from color-text to white for better contrast on dark bg of section */
+  }
+  
+  /* Responsive adjustments for icon features if needed */
+  @media (max-width: 768px) {
+    .about-me-icon-features {
+      flex-direction: column;
+      align-items: center;
+    }
+    .icon-feature-item {
+      margin-bottom: 2rem; /* Space between items when stacked */
+    }
+  }
+
+  /* Testimonial styling to ensure author and context are on the same line without extra space */
+  .testimonial-item cite > span {
+    /* This span is already inline by default, the key was removing space in the .astro file */
   }
 
   /* Alternating Icon/Text Features Section Styles */
@@ -733,6 +766,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
 
   .form-group input[type="text"],
   .form-group input[type="email"],
+  .form-group input[type="tel"],
   .form-group textarea {
     padding: 0.75rem 1rem;
     border: 1px solid #ced4da; /* Hardcoded light gray for testing visibility */
@@ -745,6 +779,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
 
   .form-group input[type="text"]:focus,
   .form-group input[type="email"]:focus,
+  .form-group input[type="tel"]:focus,
   .form-group textarea:focus {
     outline: none;
     border-color: var(--color-primary); 
@@ -785,6 +820,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
     /* Default padding & font-size for most CTAs, can be overridden */
     padding: 12px 18px;
     font-size: 14px;
+    cursor: pointer; /* Added for explicitness */
   }
   /* Ensure specific CTA variations like .hero-cta, .gallery-cta, etc., don't undo border-radius */
 
@@ -992,5 +1028,61 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
     .contact-form-section .section-heading {
       margin-bottom: 2rem;
     }
+  }
+
+  .icon-circle svg {
+    width: 32px; /* Or your desired size */
+    height: 32px; /* Or your desired size */
+    stroke: var(--color-white); /* Changed from accent-blue to white */
+  }
+
+  .about-me-icon-features {
+    display: flex;
+    justify-content: space-around; /* Or space-between */
+    gap: 1rem;
+    margin-top: 3rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  }
+
+  .icon-feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 180px; /* Adjust as needed */
+  }
+
+  .icon-circle {
+    width: 70px; /* Or your desired size */
+    height: 70px; /* Or your desired size */
+    background-color: var(--color-dark); /* Changed from background to dark */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem; /* Space between icon and text */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: subtle shadow */
+  }
+
+  .icon-feature-content h4 {
+    margin: 0;
+    font-size: 1.1rem; /* Adjust as needed */
+    color: var(--color-white); /* Changed from color-text to white for better contrast on dark bg of section */
+  }
+  
+  /* Responsive adjustments for icon features if needed */
+  @media (max-width: 768px) {
+    .about-me-icon-features {
+      flex-direction: column;
+      align-items: center;
+    }
+    .icon-feature-item {
+      margin-bottom: 2rem; /* Space between items when stacked */
+    }
+  }
+
+  /* Testimonial styling to ensure author and context are on the same line without extra space */
+  .testimonial-item cite > span {
+    /* This span is already inline by default, the key was removing space in the .astro file */
   }
 </style> 
