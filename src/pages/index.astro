@@ -230,6 +230,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
           data-netlify="true" 
           netlify-honeypot="bot-field"
           action="/thank-you/"
+          onSubmit="submit"
         >
           <input type="hidden" name="form-name" value="homepage-contact" />
           <p class="hidden">
@@ -266,7 +267,7 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
     <div class="container">
       <h2 class="section-heading">Basic Test Form</h2>
       <p>This is a simple form for testing purposes.</p>
-      <form name="basic-test-form" method="POST" data-netlify="true" netlify-honeypot="bot-field-test">
+      <form name="basic-test-form" method="POST" data-netlify="true" netlify-honeypot="bot-field-test" onSubmit="submit">
         <input type="hidden" name="form-name" value="basic-test-form" />
         <p class="hidden">
           <label>
