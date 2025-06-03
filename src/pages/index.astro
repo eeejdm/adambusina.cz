@@ -266,8 +266,13 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
     <div class="container">
       <h2 class="section-heading">Basic Test Form</h2>
       <p>This is a simple form for testing purposes.</p>
-      <form name="basic-test-form" method="POST" data-netlify="true">
+      <form name="basic-test-form" method="POST" data-netlify="true" netlify-honeypot="bot-field-test">
         <input type="hidden" name="form-name" value="basic-test-form" />
+        <p class="hidden">
+          <label>
+            Don't fill this out if you're human: <input name="bot-field-test" />
+          </label>
+        </p>
         <div style="margin-bottom: 1rem;">
           <label for="test-name" style="display: block; margin-bottom: 0.5rem;">Test Name:</label>
           <input type="text" name="test-name" id="test-name" required style="width: 100%; padding: 0.5rem;" />
