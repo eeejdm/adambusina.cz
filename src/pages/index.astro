@@ -260,6 +260,33 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
       </div>
     </section>
   )}
+
+  {/* Basic Test Form Section */}
+  <section class="basic-test-form-section" style="padding: 2rem 0; background-color: #f0f0f0;">
+    <div class="container">
+      <h2 class="section-heading">Basic Test Form</h2>
+      <p>This is a simple form for testing purposes.</p>
+      <form name="basic-test-form" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="basic-test-form" />
+        <div style="margin-bottom: 1rem;">
+          <label for="test-name" style="display: block; margin-bottom: 0.5rem;">Test Name:</label>
+          <input type="text" name="test-name" id="test-name" required style="width: 100%; padding: 0.5rem;" />
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label for="test-email" style="display: block; margin-bottom: 0.5rem;">Test Email:</label>
+          <input type="email" name="test-email" id="test-email" required style="width: 100%; padding: 0.5rem;" />
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label for="test-message" style="display: block; margin-bottom: 0.5rem;">Test Message:</label>
+          <textarea name="test-message" id="test-message" rows="4" style="width: 100%; padding: 0.5rem;"></textarea>
+        </div>
+        <div>
+          <button type="submit" class="cta-button">Submit Test Form</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
