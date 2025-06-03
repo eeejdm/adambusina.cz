@@ -226,11 +226,10 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
         <form 
           class="contact-form" 
           name="homepage-contact" 
-          method="POST" 
-          data-netlify="true" 
+          method="POST"
+          data-netlify="true"
           netlify-honeypot="bot-field"
-          action="/thank-you/"
-          onsubmit="submit"
+          action="/thank-you/" 
         >
           <input type="hidden" name="form-name" value="homepage-contact" />
           <p class="hidden">
@@ -261,34 +260,6 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
       </div>
     </section>
   )}
-
-  {/* Basic Test Form Section */}
-  <section class="basic-test-form-section" style="padding: 2rem 0; background-color: #f0f0f0;">
-    <div class="container">
-      <h2 class="section-heading">Basic Test Form</h2>
-      <p>This is a simple form for testing purposes.</p>
-      <form name="contact" method="POST" data-netlify="true">
-        <p>
-          <label>Your Name: <input type="text" name="name" /></label>
-        </p>
-        <p>
-          <label>Your Email: <input type="email" name="email" /></label>
-        </p>
-        <p>
-          <label>Your Role: <select name="role[]" multiple>
-            <option value="leader">Leader</option>
-            <option value="follower">Follower</option>
-          </select></label>
-        </p>
-        <p>
-          <label>Message: <textarea name="message"></textarea></label>
-        </p>
-        <p>
-          <button type="submit">Send</button>
-        </p>
-      </form>
-    </div>
-  </section>
 
 </BaseLayout>
 
