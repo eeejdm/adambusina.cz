@@ -1,48 +1,55 @@
 <!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <title>Netlify Forms</title>
-</head>
+<html>
+<head><title>Netlify Form Definitions</title></head>
 <body>
-    <!-- Homepage Form -->
-    <form name="homepage-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
-        <input type="hidden" name="form-name" value="homepage-contact" />
-        <div>
-            <label>Jméno: <input type="text" name="name" /></label>
-        </div>
-        <div>
-            <label>E-mail: <input type="email" name="email" /></label>
-        </div>
-        <div>
-            <label>Telefon (nepovinné): <input type="tel" name="phone" /></label>
-        </div>
-        <div>
-            <label>Zpráva: <textarea name="message"></textarea></label>
-        </div>
-        <div>
-            <button type="submit">Odeslat</button>
-        </div>
-    </form>
+  <!-- Homepage Form (from src/pages/index.astro) -->
+  <form name="homepage-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
+    <input type="hidden" name="form-name" value="homepage-contact" />
+    <p class="hidden" style="display:none;">
+      <label>
+        Don't fill this out if you're human: <input name="bot-field" />
+      </label>
+    </p>
+    <div>
+      <label>Jméno: <input type="text" name="name" required /></label>
+    </div>
+    <div>
+      <label>E-mail: <input type="email" name="email" required /></label>
+    </div>
+    <div>
+      <label>Telefon (nepovinné): <input type="tel" name="phone" /></label>
+    </div>
+    <div>
+      <label>Zpráva: <textarea name="message" required></textarea></label>
+    </div>
+    <div>
+      <button type="submit">Odeslat</button>
+    </div>
+  </form>
 
-    <!-- Kontakt Page Form -->
-    <form name="kontakt-stranka-form" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
-        <input type="hidden" name="form-name" value="kontakt-stranka-form" />
-        <div>
-            <label>Jméno: <input type="text" name="name" /></label>
-        </div>
-        <div>
-            <label>E-mail: <input type="email" name="email" /></label>
-        </div>
-        <div>
-            <label>Telefon (nepovinné): <input type="tel" name="phone" /></label>
-        </div>
-        <div>
-            <label>Zpráva: <textarea name="message"></textarea></label>
-        </div>
-        <div>
-            <button type="submit">Odeslat zprávu</button>
-        </div>
-    </form>
+  <!-- Kontakt Page Form (from src/pages/kontakt.astro) -->
+  <form name="kontakt-stranka-form" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
+    <input type="hidden" name="form-name" value="kontakt-stranka-form" />
+    <p class="hidden" style="display:none;">
+      <label>
+        Don't fill this out if you're human: <input name="bot-field" />
+      </label>
+    </p>
+    <div>
+      <label>Jméno: <input type="text" name="name" required /></label>
+    </div>
+    <div>
+      <label>E-mail: <input type="email" name="email" required /></label>
+    </div>
+    <div>
+      <label>Telefon (nepovinné): <input type="tel" name="phone" /></label>
+    </div>
+    <div>
+      <label>Zpráva: <textarea name="message" required></textarea></label>
+    </div>
+    <div>
+      <button type="submit">Odeslat zprávu</button>
+    </div>
+  </form>
 </body>
 </html> 
