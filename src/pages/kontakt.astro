@@ -58,13 +58,9 @@ const staticFormName = "contact-kontaktpage-v2"; // Static form name
             name={staticFormName} 
             method="POST" 
             data-netlify="true" 
-            data-netlify-honeypot="bot-field"
             data-astro-reload
           >
             <input type="hidden" name="form-name" value={staticFormName} />
-            <p class="hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-            </p>
             
             <div class="form-group">
               <label for="name">Jméno</label>
