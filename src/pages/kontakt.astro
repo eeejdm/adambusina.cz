@@ -55,13 +55,9 @@ const staticFormName = "contact-kontaktpage-v2"; // Static form name
           {data.form_intro_text && <div class="form-intro" set:html={data.form_intro_text}></div>}
           
           <form 
-            name={staticFormName} 
             method="POST" 
-            data-netlify="true" 
-            data-astro-reload
+            action="https://formspree.io/f/myzjzaeq"
           >
-            <input type="hidden" name="form-name" value={staticFormName} />
-            
             <div class="form-group">
               <label for="name">Jméno</label>
               <input type="text" id="name" name="name" required />

@@ -225,16 +225,9 @@ const homepageTestimonials = await getCollection('testimonials', ({ data }) => d
         <h2 class="section-heading">{homepageContent.contact_section_heading}</h2>
         <form 
           class="contact-form" 
-          name="contact-index-v2" 
           method="POST"
-          data-netlify="true"
-          data-astro-reload
+          action="https://formspree.io/f/myzjzaeq"
         >
-          <input type="hidden" name="form-name" value="contact-index-v2" />
-          <div class="form-group">
-            <label for="netlify-test-field">Netlify Test Field</label>
-            <input type="text" name="netlify-test-field" id="netlify-test-field" value="TestValue123" />
-          </div>
           <div class="form-group">
             <label for="name">Jméno</label>
             <input type="text" name="name" id="name" required />
