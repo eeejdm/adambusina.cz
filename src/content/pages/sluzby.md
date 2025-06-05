@@ -14,5 +14,3 @@ gallery_cta_label: Tohle jsem už fotil
 gallery_cta_link: /galerie
 seo_description: ""
 ---
-
-Zde bude úvodní obsah stránky "Služby", nad výpisem balíčků služeb. 
